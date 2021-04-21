@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterOwner"
         x:Class="CK3MK.Views.NewProjectDialog"
         Title="Create new mod...">
-  <Grid Margin="5">
+  <Grid Margin="10">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="200"/>
       <ColumnDefinition Width="500"/>

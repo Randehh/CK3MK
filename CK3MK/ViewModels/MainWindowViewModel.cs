@@ -16,6 +16,7 @@ namespace CK3MK.ViewModels {
 		public ReactiveCommand<Unit, Unit> OnCommand_New { get; }
 		public ReactiveCommand<Unit, Unit> OnCommand_Open { get; }
 		public ReactiveCommand<string, Unit> OnCommand_OpenRecent { get; }
+		public ReactiveCommand<Unit, Unit> OnCommand_Preferences { get; }
 
 		public ObservableCollection<DynamicMenuItem> RecentProjectItems { get; set; } = new ObservableCollection<DynamicMenuItem>();
 
@@ -25,6 +26,7 @@ namespace CK3MK.ViewModels {
 			OnCommand_New = ReactiveCommand.Create(CreateNewProject);
 			OnCommand_Open = ReactiveCommand.Create(OpenProjectDialog);
 			OnCommand_OpenRecent = ReactiveCommand.Create<string>(OpenProjectByPath);
+			OnCommand_Preferences = ReactiveCommand.Create(OpenPreferences);
 
 			m_Window.FindControl<MenuItem>("RecentProjectsMenuItem").ResourcesChanged += (sender, args) => { RefreshRecentProjects(); };
 			RefreshRecentProjects();
@@ -66,6 +68,11 @@ namespace CK3MK.ViewModels {
 			if(result != null && result.Length != 0) {
 				OpenProjectByPath(result[0]);
 			}
+		}
+
+		private async void OpenPreferences() {
+			GlobalSettingsDialog newDialog = new GlobalSettingsDialog();
+			await newDialog.ShowDialog(m_Window);
 		}
 
 		private void OpenProjectByPath(string path) {

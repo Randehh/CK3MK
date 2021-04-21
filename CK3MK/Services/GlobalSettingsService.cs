@@ -23,7 +23,7 @@ namespace CK3MK.Services {
 		}
 
 		#region Settings
-		public string GameModPath { get; set; } = "";
+		public string BaseGameFilePath { get; set; } = "";
 
 		/// <summary>
 		/// Project paths for recently opened projects

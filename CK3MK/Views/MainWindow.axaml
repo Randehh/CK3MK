@@ -29,10 +29,14 @@
           </MenuItem>  
         </MenuItem>
         <MenuItem Header="Edit">
-          <MenuItem Header="Set game path..."/>
+          <MenuItem Header="Preferences" Command="{ Binding OnCommand_Preferences }"/>
         </MenuItem>
       </Menu>
     </DockPanel>
+
+    <Grid Grid.Row="1" Margin="10">
+      
+    </Grid>
   </Grid>
   
 

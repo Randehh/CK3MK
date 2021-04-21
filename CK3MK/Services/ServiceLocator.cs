@@ -25,5 +25,15 @@ namespace CK3MK.Services {
 				return m_GlobalSettingsService;
 			}
 		}
+
+		private static GameModelService m_GameModelService = null;
+		public static GameModelService GameModelService {
+			get {
+				if (m_GameModelService == null) {
+					m_GameModelService = new GameModelService();
+				}
+				return m_GameModelService;
+			}
+		}
 	}
 }
