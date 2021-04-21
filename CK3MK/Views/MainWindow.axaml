@@ -1,0 +1,39 @@
+<Window xmlns="https://github.com/avaloniaui"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+				x:Class="CK3MK.Views.MainWindow"
+				Icon="/Assets/avalonia-logo.ico"
+				Title="CK3MK">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    
+    <DockPanel Grid.Row="0"
+               VerticalAlignment="Top">
+      <Menu DockPanel.Dock="Top">
+        <MenuItem Header="File">
+          <MenuItem Header="New" Command="{ Binding OnCommand_New }"/>
+          <MenuItem Header="Open" Command="{ Binding OnCommand_Open }"/>
+          <MenuItem Name="RecentProjectsMenuItem" Header="Open recent..." Items="{ Binding RecentProjectItems }" Classes="SubItems">
+            <MenuItem.Styles>
+              <Style Selector="MenuItem.SubItems MenuItem">
+                <Setter Property="Header" Value="{Binding Text}"/>
+                <Setter Property="Command" Value="{Binding OnClicked}"/>
+                <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+              </Style>
+            </MenuItem.Styles>
+          </MenuItem>  
+        </MenuItem>
+        <MenuItem Header="Edit">
+          <MenuItem Header="Set game path..."/>
+        </MenuItem>
+      </Menu>
+    </DockPanel>
+  </Grid>
+  
+
+</Window>

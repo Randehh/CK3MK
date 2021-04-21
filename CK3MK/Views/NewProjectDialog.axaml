@@ -1,0 +1,145 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="350"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner"
+        x:Class="CK3MK.Views.NewProjectDialog"
+        Title="Create new mod...">
+  <Grid Margin="5">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="200"/>
+      <ColumnDefinition Width="500"/>
+    </Grid.ColumnDefinitions>
+
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+    
+    <TextBlock Text="Mod name:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+    <TextBox Text="{Binding ModName}" Grid.Column="1" Grid.Row="0" />
+
+    <TextBlock Text="Destination:" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+    <Grid Grid.Column="1" Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="100"/>
+      </Grid.ColumnDefinitions>
+      <TextBox Name="TextBox_Destination" Text="{Binding Destination}" Grid.Column="0" Margin="0,0,5,0" />
+      <Button Name="Button_BrowseDestination" Content="Browse..." Width="100" Grid.Column="1" Command="{Binding OnCommand_BrowseDestination}"/>
+    </Grid>
+
+    <Grid Grid.Row="4" Grid.ColumnSpan="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="5"/>
+        <RowDefinition Height="auto"/>
+      </Grid.RowDefinitions>
+      
+      <TextBlock Grid.Row="0" Text="Mod categories:"/>
+
+      <Grid Grid.Column="0" Grid.Row="2">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <ToggleButton Grid.Row="0" Content="Alternative History" IsChecked="{Binding TagAlternativeHistory}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="2" Content="Character Focuses" IsChecked="{Binding TagCharacterFocuses}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="4" Content="Decisions" IsChecked="{Binding TagDecisions}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="6" Content="Gameplay" IsChecked="{Binding TagGameplay}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="8" Content="Map" IsChecked="{Binding TagMap}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="10" Content="Schemes" IsChecked="{Binding TagSchemes}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="12" Content="Translation" IsChecked="{Binding TagTranslation}" HorizontalAlignment="Stretch"/>
+      </Grid>
+      <Grid Grid.Column="2" Grid.Row="2">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <ToggleButton Grid.Row="0" Content="Balance" IsChecked="{Binding TagBalance}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="2" Content="Character Interactions" IsChecked="{Binding TagCharacterInteractions}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="4" Content="Events" IsChecked="{Binding TagEvents}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="6" Content="Graphics" IsChecked="{Binding TagGraphics}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="8" Content="Portraits" IsChecked="{Binding TagPortraits}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="10" Content="Sound" IsChecked="{Binding TagSound}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="12" Content="Utilities" IsChecked="{Binding TagUtilities}" HorizontalAlignment="Stretch"/>
+      </Grid>
+
+      <Grid Grid.Column="4" Grid.Row="2">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="5"/>
+          <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <ToggleButton Grid.Row="0" Content="Bookmarks" IsChecked="{Binding TagBookmarks}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="2" Content="Culture" IsChecked="{Binding TagCulture}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="4" Content="Fixes" IsChecked="{Binding TagFixes}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="6" Content="Historical" IsChecked="{Binding TagHistorical}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="8" Content="Religion" IsChecked="{Binding TagReligion}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="10" Content="Total Conversion" IsChecked="{Binding TagTotalConversion}" HorizontalAlignment="Stretch"/>
+        <ToggleButton Grid.Row="12" Content="Warfare" IsChecked="{Binding TagWarfare}" HorizontalAlignment="Stretch"/>
+      </Grid>
+    </Grid>
+
+    <Grid Grid.Row="6">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="auto"/>
+      </Grid.ColumnDefinitions>
+      <Button Content="Create new project" Command="{Binding OnCommand_CreateProject}" IsEnabled="{Binding CanCreateProject}" Grid.Column="0"/>
+      <TextBlock Text="{Binding CanCreateProjectMessage}" Grid.Column="2"  VerticalAlignment="Center"/>
+    </Grid>
+  </Grid>
+</Window>
