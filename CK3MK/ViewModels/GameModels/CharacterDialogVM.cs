@@ -1,18 +1,20 @@
-﻿using CK3MK.Models.Game.History;
+﻿using Avalonia.Controls;
+using CK3MK.Models.Game.History;
 using CK3MK.Services;
+using CK3MK.ViewModels.GameModels.Attributes;
+using CK3MK.Views;
 using CK3MK.Views.GameModels;
 using ReactiveUI;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static CK3MK.Models.Game.GameModelAttributes;
 
 namespace CK3MK.ViewModels.GameModels {
 	public class CharacterDialogVM : ViewModelBase {
 
 		private CharacterDialog m_Window;
+
+		private List<GameModelAttributeControl> m_Attributes = new List<GameModelAttributeControl>();
 
 		private ObservableCollection<string> m_Countries = new ObservableCollection<string>();
 		public ObservableCollection<string> Countries {
@@ -57,6 +59,10 @@ namespace CK3MK.ViewModels.GameModels {
 
 				if(m_SelectedCharacter != null) {
 					m_SelectedCharacter.OnModelChanged += UpdateCharacterData;
+
+					foreach(GameModelAttributeControl attributeControl in m_Attributes) {
+						//(attributeControl.DataContext as GameModelAttributeControlVM).Attribute = m_SelectedCharacter;
+					}
 				}
 			}
 		}
@@ -65,6 +71,10 @@ namespace CK3MK.ViewModels.GameModels {
 			m_Window = window;
 
 			Countries = new ObservableCollection<string>(ServiceLocator.GameModelService.GetCountries());
+			StackPanel attributeStackPanel = m_Window.FindControl<StackPanel>("AttributeStackPanel");
+			foreach(IControl c in attributeStackPanel.Children) {
+				m_Attributes.Add(c as GameModelAttributeControl);
+			}
 		}
 
 		private void UpdateCharacterData() {

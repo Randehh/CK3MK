@@ -9,14 +9,16 @@ namespace CK3MK.Models.Game {
 	public class BaseGameModel {
 
 		//Base attributes
+		public string FileSourceName { get; set; }
 		public GameModelAttributeString Id { get; set; }
 		public GameModelAttributeString Name { get; set; }
 
 		private List<Tuple<IGameModelAttribute, string>> m_PostLinkPairs = new List<Tuple<IGameModelAttribute, string>>();
 
-		public BaseGameModel() {
-			Id = RegisterAttribute(new GameModelAttributeString("ID"));
-			Name = RegisterAttribute(new GameModelAttributeString("Name", true));
+		public BaseGameModel(string fileName) {
+			FileSourceName = fileName;
+			Id = RegisterAttribute(new GameModelAttributeString(this, "ID"));
+			Name = RegisterAttribute(new GameModelAttributeString(this, "Name", true));
 		}
 
 		private List<IGameModelAttribute> m_Attributes = new List<IGameModelAttribute>();

@@ -16,4 +16,9 @@
   <ItemGroup>
     <Folder Include="Models\Game\Common\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\GameModels\Attributes\GameModelAttributeControl.axaml.cs">
+      <DependentUpon>GameModelAttributeControl.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

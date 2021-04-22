@@ -51,7 +51,7 @@
     </Grid>
 
     <Grid Grid.Row="2">
-      <StackPanel>
+      <StackPanel Name="AttributeStackPanel">
         <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Name }"/>
         <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Dna }"/>
         <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Female }"/>

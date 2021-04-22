@@ -67,28 +67,26 @@ namespace CK3MK.Models.Game.History {
 		public GameModelAttributeInt Health { get; set; }
 		public GameModelAttributeInt Fertility { get; set; }
 
-		public string FileSourceName { get; set; }
-
-		public Character(string fileName) {
-			Dna =					RegisterAttribute(new GameModelAttributeString("DNA"));
-			Female =				RegisterAttribute(new GameModelAttributeBool("Is female"));
-			Martial =				RegisterAttribute(new GameModelAttributeInt("Martial skill"));
-			Prowess =				RegisterAttribute(new GameModelAttributeInt("Prowess skill"));
-			Diplomacy =				RegisterAttribute(new GameModelAttributeInt("Diplomacy skill"));
-			Intrigue =				RegisterAttribute(new GameModelAttributeInt("Intrigue skill"));
-			Stewardship =			RegisterAttribute(new GameModelAttributeInt("Stewardship skill"));
-			Learning =				RegisterAttribute(new GameModelAttributeInt("Learning skill"));
-			Father =				RegisterAttribute(new GameModelAttributeCharacter("Father", fileName));
-			Mother =				RegisterAttribute(new GameModelAttributeCharacter("Mother", fileName));
-			DisallowRandomTraits =	RegisterAttribute(new GameModelAttributeBool("Disallow random traits"));
-			Religion =				RegisterAttribute(new GameModelAttributeString("Religion", true));
-			Culture =				RegisterAttribute(new GameModelAttributeString("Culture", true));
-			Dynasty =				RegisterAttribute(new GameModelAttributeString("Dynasty"));
-			DynastyHouse =			RegisterAttribute(new GameModelAttributeString("Dynasty house"));
-			GiveNickname =			RegisterAttribute(new GameModelAttributeString("Give nickname"));
-			Sexuality =				RegisterAttribute(new GameModelAttributeString("Sexuality"));
-			Health =				RegisterAttribute(new GameModelAttributeInt("Health"));
-			Fertility =				RegisterAttribute(new GameModelAttributeInt("Fertility"));
+		public Character(string fileName) : base(fileName) {
+			Dna =					RegisterAttribute(new GameModelAttributeString(this, "DNA"));
+			Female =				RegisterAttribute(new GameModelAttributeBool(this, "Is female"));
+			Martial =				RegisterAttribute(new GameModelAttributeInt(this, "Martial skill"));
+			Prowess =				RegisterAttribute(new GameModelAttributeInt(this, "Prowess skill"));
+			Diplomacy =				RegisterAttribute(new GameModelAttributeInt(this, "Diplomacy skill"));
+			Intrigue =				RegisterAttribute(new GameModelAttributeInt(this, "Intrigue skill"));
+			Stewardship =			RegisterAttribute(new GameModelAttributeInt(this, "Stewardship skill"));
+			Learning =				RegisterAttribute(new GameModelAttributeInt(this, "Learning skill"));
+			Father =				RegisterAttribute(new GameModelAttributeCharacter(this, "Father", fileName));
+			Mother =				RegisterAttribute(new GameModelAttributeCharacter(this, "Mother", fileName));
+			DisallowRandomTraits =	RegisterAttribute(new GameModelAttributeBool(this, "Disallow random traits"));
+			Religion =				RegisterAttribute(new GameModelAttributeString(this, "Religion", true));
+			Culture =				RegisterAttribute(new GameModelAttributeString(this, "Culture", true));
+			Dynasty =				RegisterAttribute(new GameModelAttributeString(this, "Dynasty"));
+			DynastyHouse =			RegisterAttribute(new GameModelAttributeString(this, "Dynasty house"));
+			GiveNickname =			RegisterAttribute(new GameModelAttributeString(this, "Give nickname"));
+			Sexuality =				RegisterAttribute(new GameModelAttributeString(this, "Sexuality"));
+			Health =				RegisterAttribute(new GameModelAttributeInt(this, "Health"));
+			Fertility =				RegisterAttribute(new GameModelAttributeInt(this, "Fertility"));
 
 			FileSourceName = fileName;
 		}

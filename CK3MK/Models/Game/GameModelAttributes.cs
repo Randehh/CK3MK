@@ -6,28 +6,32 @@ using System;
 namespace CK3MK.Models.Game {
 	public class GameModelAttributes {
 		public interface IGameModelAttribute {
+			public BaseGameModel Model { get; set; }
 			public Action OnValueChanged { get; set; }
 			public string StringValue { get; set; }
 			public bool IsPostLinkAttribute { get; set; }
 		}
 
 		public abstract class GameModelAttribute<T> : ReactiveObject, IGameModelAttribute {
-
+			public BaseGameModel Model { get; set; }
 			public string Name { get; set; }
 			private T m_Value;
-			protected T Value {
+			public T Value {
 				get => m_Value;
 				set {
 					this.RaiseAndSetIfChanged(ref m_Value, value);
 					this.RaisePropertyChanged(nameof(StringValue));
 					m_Value = value;
-					IsAssigned = true;
+					if (!IsAssigned) {
+						IsAssigned = m_Value != null;
+					}
 				}
 			}
 			public Action OnValueChanged { get; set; } = delegate { };
 			public bool IsPostLinkAttribute { get; set; }
 
-			public GameModelAttribute(string name, bool postLinkAttribute = false) {
+			public GameModelAttribute(BaseGameModel model, string name, bool postLinkAttribute = false) {
+				Model = model;
 				Name = name;
 				IsPostLinkAttribute = postLinkAttribute;
 			}
@@ -59,7 +63,7 @@ namespace CK3MK.Models.Game {
 		public class GameModelAttributeString : GameModelAttribute<string> {
 			public bool HasQuotes { get; set; } = false;
 
-			public GameModelAttributeString(string name, bool hasQuotes = false) : base(name) {
+			public GameModelAttributeString(BaseGameModel model, string name, bool hasQuotes = false) : base(model, name) {
 				HasQuotes = hasQuotes;
 			}
 
@@ -73,7 +77,7 @@ namespace CK3MK.Models.Game {
 		}
 		
 		public class GameModelAttributeInt : GameModelAttribute<int> {
-			public GameModelAttributeInt(string name) : base(name) { }
+			public GameModelAttributeInt(BaseGameModel model, string name) : base(model, name) { }
 
 			public override int ValueFromString(string s) {
 				return int.Parse(s);
@@ -81,7 +85,7 @@ namespace CK3MK.Models.Game {
 		}
 		
 		public class GameModelAttributeBool : GameModelAttribute<bool> {
-			public GameModelAttributeBool(string name) : base(name) { }
+			public GameModelAttributeBool(BaseGameModel model, string name) : base(model, name) { }
 
 			public override bool ValueFromString(string s) {
 				if (s.Equals("yes")) {
@@ -102,7 +106,7 @@ namespace CK3MK.Models.Game {
 
 		public class GameModelAttributeCharacter : GameModelAttribute<Character> {
 			public string FileName { get; set; }
-			public GameModelAttributeCharacter(string name, string fileName) : base(name, true) {
+			public GameModelAttributeCharacter(BaseGameModel model, string name, string fileName) : base(model, name, true) {
 				FileName = fileName;
 			}
 
