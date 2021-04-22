@@ -4,7 +4,7 @@
 				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 				mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 				x:Class="CK3MK.Views.MainWindow"
-				Icon="/Assets/avalonia-logo.ico"
+				Icon="/Assets/CK3MK_Logo.ico"
 				Title="CK3MK">
   <Grid>
     <Grid.RowDefinitions>
