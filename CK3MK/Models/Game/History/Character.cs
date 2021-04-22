@@ -46,8 +46,6 @@ using static CK3MK.Models.Game.GameModelAttributes;
 
 namespace CK3MK.Models.Game.History {
 	public class Character : BaseGameModel {
-		public GameModelAttributeString Id { get; set; }
-		public GameModelAttributeString Name { get; set; }
 		public GameModelAttributeString Dna { get; set; }
 		public GameModelAttributeBool Female { get; set; }
 		public GameModelAttributeInt Martial { get; set; }
@@ -57,8 +55,8 @@ namespace CK3MK.Models.Game.History {
 		public GameModelAttributeInt Stewardship { get; set; }
 		public GameModelAttributeInt Learning { get; set; }
 		//public GameModelAttribute<List<string>> Trait { get; set; } = new GameModelAttribute<List<string>>();
-		public GameModelAttributeString Father { get; set; }
-		public GameModelAttributeString Mother { get; set; }
+		public GameModelAttributeCharacter Father { get; set; }
+		public GameModelAttributeCharacter Mother { get; set; }
 		public GameModelAttributeBool DisallowRandomTraits { get; set; }
 		public GameModelAttributeString Religion { get; set; }
 		public GameModelAttributeString Culture { get; set; }
@@ -69,9 +67,9 @@ namespace CK3MK.Models.Game.History {
 		public GameModelAttributeInt Health { get; set; }
 		public GameModelAttributeInt Fertility { get; set; }
 
-		public Character() {
-			Id =					RegisterAttribute(new GameModelAttributeString("ID"));
-			Name =					RegisterAttribute(new GameModelAttributeString("Name", true));
+		public string FileSourceName { get; set; }
+
+		public Character(string fileName) {
 			Dna =					RegisterAttribute(new GameModelAttributeString("DNA"));
 			Female =				RegisterAttribute(new GameModelAttributeBool("Is female"));
 			Martial =				RegisterAttribute(new GameModelAttributeInt("Martial skill"));
@@ -80,8 +78,8 @@ namespace CK3MK.Models.Game.History {
 			Intrigue =				RegisterAttribute(new GameModelAttributeInt("Intrigue skill"));
 			Stewardship =			RegisterAttribute(new GameModelAttributeInt("Stewardship skill"));
 			Learning =				RegisterAttribute(new GameModelAttributeInt("Learning skill"));
-			Father =				RegisterAttribute(new GameModelAttributeString("Father"));
-			Mother =				RegisterAttribute(new GameModelAttributeString("Mother"));
+			Father =				RegisterAttribute(new GameModelAttributeCharacter("Father", fileName));
+			Mother =				RegisterAttribute(new GameModelAttributeCharacter("Mother", fileName));
 			DisallowRandomTraits =	RegisterAttribute(new GameModelAttributeBool("Disallow random traits"));
 			Religion =				RegisterAttribute(new GameModelAttributeString("Religion", true));
 			Culture =				RegisterAttribute(new GameModelAttributeString("Culture", true));
@@ -91,6 +89,8 @@ namespace CK3MK.Models.Game.History {
 			Sexuality =				RegisterAttribute(new GameModelAttributeString("Sexuality"));
 			Health =				RegisterAttribute(new GameModelAttributeInt("Health"));
 			Fertility =				RegisterAttribute(new GameModelAttributeInt("Fertility"));
+
+			FileSourceName = fileName;
 		}
 	}
 }

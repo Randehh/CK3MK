@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using CK3MK.Models.Game.History;
+using CK3MK.Services;
+using ReactiveUI;
 using System;
 
 namespace CK3MK.Models.Game {
@@ -6,7 +8,9 @@ namespace CK3MK.Models.Game {
 		public interface IGameModelAttribute {
 			public Action OnValueChanged { get; set; }
 			public string StringValue { get; set; }
+			public bool IsPostLinkAttribute { get; set; }
 		}
+
 		public abstract class GameModelAttribute<T> : ReactiveObject, IGameModelAttribute {
 
 			public string Name { get; set; }
@@ -21,9 +25,11 @@ namespace CK3MK.Models.Game {
 				}
 			}
 			public Action OnValueChanged { get; set; } = delegate { };
+			public bool IsPostLinkAttribute { get; set; }
 
-			public GameModelAttribute(string name) {
+			public GameModelAttribute(string name, bool postLinkAttribute = false) {
 				Name = name;
+				IsPostLinkAttribute = postLinkAttribute;
 			}
 
 			private bool m_IsAssigned = false;
@@ -65,6 +71,7 @@ namespace CK3MK.Models.Game {
 				return includeQuotes ? Value : Value.Trim('"');
 			}
 		}
+		
 		public class GameModelAttributeInt : GameModelAttribute<int> {
 			public GameModelAttributeInt(string name) : base(name) { }
 
@@ -72,6 +79,7 @@ namespace CK3MK.Models.Game {
 				return int.Parse(s);
 			}
 		}
+		
 		public class GameModelAttributeBool : GameModelAttribute<bool> {
 			public GameModelAttributeBool(string name) : base(name) { }
 
@@ -89,6 +97,24 @@ namespace CK3MK.Models.Game {
 				} else {
 					return "no";
 				}
+			}
+		}
+
+		public class GameModelAttributeCharacter : GameModelAttribute<Character> {
+			public string FileName { get; set; }
+			public GameModelAttributeCharacter(string name, string fileName) : base(name, true) {
+				FileName = fileName;
+			}
+
+			public override Character ValueFromString(string s) {
+				return ServiceLocator.GameModelService.GetCharacter(FileName, s);
+			}
+
+			public override string ValueToString(Character o) {
+				if(o != null) {
+					return o.Name.StringValue;
+				}
+				return null;
 			}
 		}
 	}

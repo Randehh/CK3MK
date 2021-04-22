@@ -56,7 +56,6 @@ namespace CK3MK.ViewModels.GameModels {
 				this.RaiseAndSetIfChanged(ref m_SelectedCharacter, value);
 
 				if(m_SelectedCharacter != null) {
-
 					m_SelectedCharacter.OnModelChanged += UpdateCharacterData;
 				}
 			}

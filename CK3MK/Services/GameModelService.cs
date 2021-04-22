@@ -1,4 +1,6 @@
-﻿using CK3MK.Utilities;
+﻿using CK3MK.Models.Game;
+using CK3MK.Models.Game.History;
+using CK3MK.Utilities;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -11,18 +13,25 @@ namespace CK3MK.Services {
 		private Dictionary<string, string> m_GlobalPromotes = new Dictionary<string, string>();
 
 		//Instances
-		private Dictionary<string, ObservableCollection<Models.Game.History.Character>> m_Characters = new Dictionary<string, ObservableCollection<Models.Game.History.Character>>();
+		private Dictionary<string, GameModelCollection<Character>> m_Characters = new Dictionary<string, GameModelCollection<Character>>();
 
 		public List<string> GetCountries() {
 			return new List<string>(m_Characters.Keys);
 		}
 
-		public ObservableCollection<Models.Game.History.Character> GetCharacters(string country) {
+		public ObservableCollection<Character> GetCharacters(string country) {
 			if (!m_Characters.ContainsKey(country)) {
-				return new ObservableCollection<Models.Game.History.Character>();
+				return new ObservableCollection<Character>();
 			}
 
-			return m_Characters[country];
+			return m_Characters[country].Collection;
+		}
+
+		public Character GetCharacter(string country, string id) {
+			if (!m_Characters.ContainsKey(country)) {
+				return null;
+			}
+			return m_Characters[country].GetById(id);
 		}
 
 		#region Model dump
@@ -79,14 +88,16 @@ namespace CK3MK.Services {
 			foreach (string file in Directory.GetFiles(charactersFolder)) {
 				string fileName = file.Substring(charactersFolder.Length);
 				fileName = fileName.Substring(1, fileName.Length - ".txt".Length - 1);
-				Models.Game.History.Character currentCharacter = new Models.Game.History.Character();
-				List<Models.Game.History.Character> list = new List<Models.Game.History.Character>();
+				Character currentCharacter = new Character(fileName);
+				GameModelCollection<Character> collection = new GameModelCollection<Character>();
 
 				AssetsUtil.ReadCK3ConfigFile(Path.Combine(charactersFolder, file),
 					(key, depth) => {
 						if(depth == 0) { // New character
-							currentCharacter = new Models.Game.History.Character();
+							currentCharacter = new Character(fileName);
 							currentCharacter.Id.StringValue = key;
+						} else {
+							string w = "wait";
 						}
 					},
 					(key, value, depth) => {
@@ -98,12 +109,13 @@ namespace CK3MK.Services {
 					},
 					(depth) => {
 						if (depth == 0) { // End of new character
-							list.Add(currentCharacter);
+							collection.AddModel(currentCharacter);
 							currentCharacter = null;
 						}
 					});
 
-				m_Characters.Add(fileName, new ObservableCollection<Models.Game.History.Character>(list.OrderBy(character => character.Name.StringValue)));
+				m_Characters.Add(fileName, collection);
+				collection.FinalizeCollection();
 			}
 		}
 		#endregion
