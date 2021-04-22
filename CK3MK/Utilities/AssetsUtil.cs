@@ -87,9 +87,15 @@ namespace CK3MK.Utilities {
 								keyval = line.Split(equalsSymbol);
 							}
 							if (keyval.Length != 2) continue; // Ignore unknown
-							if (keyval[1].Equals("[unregistered]")) continue; // Ignore unused values
 
-							onAssign(keyval[0], keyval[1], depth);
+							string key = keyval[0];
+							string val = keyval[1];
+							if (val.Equals("[unregistered]")) continue; // Ignore unused values
+
+							if (val.Contains("#")) {
+								val = val.Substring(0, val.IndexOf("#") - 1);
+							}
+							onAssign(key, val, depth);
 						}
 					}
 				}

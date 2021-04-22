@@ -1,0 +1,78 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:CK3MK.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        CanResize="False"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner"
+        x:Class="CK3MK.Views.GameModels.CharacterDialog"
+        Title="Character Inspector">
+  <Grid Margin="10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="5"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto"/>
+        <ColumnDefinition Width="25"/>
+        <ColumnDefinition Width="auto"/>
+      </Grid.ColumnDefinitions>
+
+      <Grid Grid.Column="0">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="auto"/>
+          <ColumnDefinition Width="5"/>
+          <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Country" Grid.Column="0" VerticalAlignment="Center"/>
+        <DropDown Items="{ Binding Countries }" SelectedItem="{ Binding SelectedCountry }" Grid.Column="2" HorizontalAlignment="Stretch"/>
+      </Grid>
+
+      <Grid Grid.Column="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="auto"/>
+          <ColumnDefinition Width="5"/>
+          <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Character" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox Items="{ Binding Characters }" SelectedItem="{ Binding SelectedCharacter }" Grid.Column="2" HorizontalAlignment="Stretch">
+          <ComboBox.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{ Binding Name.StringValue }" />
+            </DataTemplate>
+          </ComboBox.ItemTemplate>
+        </ComboBox>
+      </Grid>
+    </Grid>
+
+    <Grid Grid.Row="2">
+      <StackPanel>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Name }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Dna }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Female }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Martial }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Prowess }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Diplomacy }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Intrigue }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Stewardship }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Learning }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Father }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Mother }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.DisallowRandomTraits }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Religion }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Culture }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Dynasty }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.DynastyHouse }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.GiveNickname }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Sexuality }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Health }"/>
+        <vm:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Fertility }"/>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</Window>

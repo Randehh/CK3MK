@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 
 namespace CK3MK.Services {
 	public class GameModelService {
@@ -11,6 +12,18 @@ namespace CK3MK.Services {
 
 		//Instances
 		private Dictionary<string, ObservableCollection<Models.Game.History.Character>> m_Characters = new Dictionary<string, ObservableCollection<Models.Game.History.Character>>();
+
+		public List<string> GetCountries() {
+			return new List<string>(m_Characters.Keys);
+		}
+
+		public ObservableCollection<Models.Game.History.Character> GetCharacters(string country) {
+			if (!m_Characters.ContainsKey(country)) {
+				return new ObservableCollection<Models.Game.History.Character>();
+			}
+
+			return m_Characters[country];
+		}
 
 		#region Model dump
 		public bool LoadModelDump(string path) {
@@ -67,38 +80,18 @@ namespace CK3MK.Services {
 				string fileName = file.Substring(charactersFolder.Length);
 				fileName = fileName.Substring(1, fileName.Length - ".txt".Length - 1);
 				Models.Game.History.Character currentCharacter = new Models.Game.History.Character();
-				ObservableCollection<Models.Game.History.Character> list = new ObservableCollection<Models.Game.History.Character>();
+				List<Models.Game.History.Character> list = new List<Models.Game.History.Character>();
 
 				AssetsUtil.ReadCK3ConfigFile(Path.Combine(charactersFolder, file),
 					(key, depth) => {
 						if(depth == 0) { // New character
 							currentCharacter = new Models.Game.History.Character();
-							currentCharacter.Id.SetValue(key);
+							currentCharacter.Id.StringValue = key;
 						}
 					},
 					(key, value, depth) => {
-						if (depth == 1) { // Base attributes
-							switch (key) {
-								case "name": currentCharacter.Name.SetValue(value); break;
-								case "female": currentCharacter.Female.SetValue(value); break;
-								case "dna": currentCharacter.Dna.SetValue(value); break;
-								case "martial": currentCharacter.Martial.SetValue(value); break;
-								case "diplomacy": currentCharacter.Diplomacy.SetValue(value); break;
-								case "intrigue": currentCharacter.Intrigue.SetValue(value); break;
-								case "stewardship": currentCharacter.Stewardship.SetValue(value); break;
-								case "learning": currentCharacter.Learning.SetValue(value); break;
-								case "father": currentCharacter.Father.SetValue(value); break;
-								case "mother": currentCharacter.Mother.SetValue(value); break;
-								case "disallow_random_traits": currentCharacter.DisallowRandomTraits.SetValue(value); break;
-								case "religion": currentCharacter.Religion.SetValue(value); break;
-								case "culture": currentCharacter.Culture.SetValue(value); break;
-								case "dynasty": currentCharacter.Dynasty.SetValue(value); break;
-								case "dynasty_house": currentCharacter.DynastyHouse.SetValue(value); break;
-								case "give_nickname": currentCharacter.GiveNickname.SetValue(value); break;
-								case "sexuality": currentCharacter.Sexuality.SetValue(value); break;
-								case "health": currentCharacter.Health.SetValue(value); break;
-								case "fertility": currentCharacter.Fertility.SetValue(value); break;
-							}
+						if (depth == 1) {
+							currentCharacter.SetAttributeValue(key, value);
 						} else {
 							// Advanced attributes (???)
 						}
@@ -110,8 +103,7 @@ namespace CK3MK.Services {
 						}
 					});
 
-
-				m_Characters.Add(fileName, list);
+				m_Characters.Add(fileName, new ObservableCollection<Models.Game.History.Character>(list.OrderBy(character => character.Name.StringValue)));
 			}
 		}
 		#endregion

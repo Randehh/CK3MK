@@ -1,47 +1,47 @@
-﻿using System;
+﻿using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
+using static CK3MK.Models.Game.GameModelAttributes;
 
 namespace CK3MK.Models.Game {
 	public class BaseGameModel {
-
-		public class GameModelAttribute<T> {
-			private T m_Value;
-
-			public virtual void SetValue(T value) {
-				m_Value = value;
-				IsAssigned = true;
-			}
-
-			public virtual T GetValue() {
-				return m_Value;
-			}
-
-			public bool IsAssigned { get; set; } = false;
+		private List<IGameModelAttribute> m_Attributes = new List<IGameModelAttribute>();
+		public List<IGameModelAttribute> Attributes {
+			get => m_Attributes;
 		}
 
-		public class GameModelAttributeString : GameModelAttribute<string> {
-			public bool HasQuotes { get; set; } = false;
+		public Action OnModelChanged { get; set; } = delegate { };
 
-			public GameModelAttributeString(bool hasQuotes = false) {
-				HasQuotes = hasQuotes;
-			}
+		public T RegisterAttribute<T>(T attribute) where T : IGameModelAttribute {
+			m_Attributes.Add(attribute);
+			attribute.OnValueChanged += OnAttributeChanged;
+			return attribute;
+		}
 
-			public string GetValue(bool includeQuotes) {
-				return includeQuotes ? base.GetValue() : base.GetValue().Trim('"');
-			}
-		}
-		public class GameModelAttributeInt : GameModelAttribute<int> {
-			public void SetValue(string s) {
-				SetValue(int.Parse(s));
-			}
-		}
-		public class GameModelAttributeBool : GameModelAttribute<bool> {
-			public void SetValue(string s) {
-				if (s.Equals("yes")) {
-					SetValue(true);
+		public void SetAttributeValue(string attributeKey, string value) {
+			string propertyKey = TitleCaseConvert(attributeKey);
+			Type thisType = GetType();
+			PropertyInfo property = thisType.GetProperty(propertyKey);
+			if(property != null) {
+				IGameModelAttribute attribute = property.GetValue(this) as IGameModelAttribute;
+				if (attribute != null) {
+					attribute.StringValue = value;
 				} else {
-					SetValue(false);
+					throw new Exception($"Attribute of type {attributeKey} is not derived from {nameof(IGameModelAttribute)}");
 				}
+			} else {
+				//throw new Exception($"Attribute of type {attributeKey} is not found in game model of type {thisType.Name}");
 			}
+		}
+
+		private static string TitleCaseConvert(string title) {
+			return new CultureInfo("en").TextInfo.ToTitleCase(title.ToLower().Replace("_", " ")).Replace(" ", "");
+		}
+
+		private void OnAttributeChanged() {
+			OnModelChanged();
 		}
 	}
 }

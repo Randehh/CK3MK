@@ -3,6 +3,7 @@ using CK3MK.Models;
 using CK3MK.Services;
 using CK3MK.Utilities;
 using CK3MK.Views;
+using CK3MK.Views.GameModels;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -17,6 +18,7 @@ namespace CK3MK.ViewModels {
 		public ReactiveCommand<Unit, Unit> OnCommand_Open { get; }
 		public ReactiveCommand<string, Unit> OnCommand_OpenRecent { get; }
 		public ReactiveCommand<Unit, Unit> OnCommand_Preferences { get; }
+		public ReactiveCommand<Unit, Unit> OnCommand_CharacterInspector { get; }
 
 		public ObservableCollection<DynamicMenuItem> RecentProjectItems { get; set; } = new ObservableCollection<DynamicMenuItem>();
 
@@ -27,12 +29,22 @@ namespace CK3MK.ViewModels {
 			OnCommand_Open = ReactiveCommand.Create(OpenProjectDialog);
 			OnCommand_OpenRecent = ReactiveCommand.Create<string>(OpenProjectByPath);
 			OnCommand_Preferences = ReactiveCommand.Create(OpenPreferences);
+			OnCommand_CharacterInspector = ReactiveCommand.Create(OpenCharacterInspector);
 
 			m_Window.FindControl<MenuItem>("RecentProjectsMenuItem").ResourcesChanged += (sender, args) => { RefreshRecentProjects(); };
 			RefreshRecentProjects();
 
 			//Hook into services
 			ServiceLocator.ProjectService.OnOpenProject += OpenProject;
+
+			//Load existing data
+			if (!string.IsNullOrWhiteSpace(ServiceLocator.GlobalSettingsService.DumpPath)) {
+				ServiceLocator.GameModelService.LoadModelDump(ServiceLocator.GlobalSettingsService.DumpPath);
+			}
+
+			if (!string.IsNullOrWhiteSpace(ServiceLocator.GlobalSettingsService.BaseGameFilePath)) {
+				ServiceLocator.GameModelService.LoadCharacters();
+			}
 		}
 
 		public void RefreshRecentProjects() {
@@ -81,6 +93,11 @@ namespace CK3MK.ViewModels {
 
 		private void OpenProject(object e, ModProject project) {
 			string d = "Project loaded = " + project.Name;
+		}
+
+		private async void OpenCharacterInspector() {
+			CharacterDialog newDialog = new CharacterDialog();
+			await newDialog.ShowDialog(m_Window);
 		}
 	}
 }
