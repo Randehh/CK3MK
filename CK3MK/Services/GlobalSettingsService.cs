@@ -24,6 +24,7 @@ namespace CK3MK.Services {
 
 		#region Settings
 		public string BaseGameFilePath { get; set; } = "";
+		public string DumpPath { get; set; } = "";
 
 		/// <summary>
 		/// Project paths for recently opened projects

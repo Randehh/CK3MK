@@ -53,5 +53,48 @@ namespace CK3MK.Utilities {
 			string jsonString = File.ReadAllText(path);
 			return JsonSerializer.Deserialize<T>(jsonString);
 		}
+
+		public static bool ReadCK3ConfigFile(string path, Action<string, int> onStartNewTable, Action<string, string, int> onAssign, Action<int> onEndTable) {
+			if (!File.Exists(path)) {
+				return false;
+			}
+
+			using (StreamReader sr = new StreamReader(path)) {
+				string line;
+				int depth = 0;
+
+				string startTableSymbol = "= {";
+				string assignSymbol = " -> ";
+				string equalsSymbol = " = ";
+
+				while ((line = sr.ReadLine()) != null) {
+					line = line.Trim();
+					if (line.StartsWith("#")) continue; // Ignore comments
+
+					if (line.EndsWith(startTableSymbol)) {
+						string keyName = line.Substring(0, line.Length - startTableSymbol.Length).Trim();
+						onStartNewTable(keyName, depth);
+						depth++;
+					} else {
+						if (line.Equals("}")) {
+							depth--;
+							onEndTable(depth);
+						} else {
+							string[] keyval = new string[0];
+							if (line.Contains(assignSymbol)) {
+								keyval = line.Split(assignSymbol);
+							} else if (line.Contains(equalsSymbol)) {
+								keyval = line.Split(equalsSymbol);
+							}
+							if (keyval.Length != 2) continue; // Ignore unknown
+							if (keyval[1].Equals("[unregistered]")) continue; // Ignore unused values
+
+							onAssign(keyval[0], keyval[1], depth);
+						}
+					}
+				}
+			}
+			return true;
+		}
 	}
 }

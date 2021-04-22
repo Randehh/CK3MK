@@ -11,17 +11,21 @@
   <Grid Margin="10">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="200"/>
-      <ColumnDefinition Width="500"/>
+      <ColumnDefinition Width="800"/>
     </Grid.ColumnDefinitions>
 
     <Grid.RowDefinitions>
       <RowDefinition Height="auto"/>
+      <RowDefinition Height="5"/>
       <RowDefinition Height="auto"/>
+      <RowDefinition Height="5"/>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
 
-    <TextBlock Text="Base game files:" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-    <Grid Grid.Column="1" Grid.Row="0">
+    <TextBlock Text="Required data paths" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" FontWeight="Bold"/>
+    
+    <TextBlock Text="Base game files:" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+    <Grid Grid.Column="1" Grid.Row="2">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="100"/>
@@ -30,7 +34,15 @@
       <Button Name="Button_BrowseBaseGameFiles" Content="Browse..." Width="100" Grid.Column="1" Command="{Binding OnCommand_BrowseBaseGameFiles }"/>
     </Grid>
 
-    <Button Name="Button_ParseGameDump" Content="Select and parse game dump" Command="{Binding OnCommand_ParseGameDump }" Grid.Row="1" Grid.ColumnSpan="2"/>    
+    <TextBlock Text="Data dump file:" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"/>
+    <Grid Grid.Column="1" Grid.Row="4">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="100"/>
+      </Grid.ColumnDefinitions>
+      <TextBox Name="TextBox_DumpPath" Text="{Binding DumpPath}" Grid.Column="0" Margin="0,0,5,0" />
+      <Button Name="Button_ParseGameDump" Content="Browse..." Command="{Binding OnCommand_ParseGameDump }" Width="100" Grid.Column="1"/>
+    </Grid> 
     
   </Grid>
 </Window>

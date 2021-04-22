@@ -4,17 +4,12 @@ using CK3MK.Utilities;
 using CK3MK.Views;
 using CK3MK.Views.Generic;
 using ReactiveUI;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CK3MK.ViewModels {
 	public class GlobalSettingsDialogVM : ViewModelBase {
-
 		private GlobalSettingsDialog m_Window;
 
 		public ReactiveCommand<Unit, Unit> OnCommand_BrowseBaseGameFiles { get; }
@@ -26,6 +21,16 @@ namespace CK3MK.ViewModels {
 			set {
 				this.RaiseAndSetIfChanged(ref m_BaseGameFilePath, value);
 				ServiceLocator.GlobalSettingsService.BaseGameFilePath = value;
+				ServiceLocator.GlobalSettingsService.Save();
+			}
+		}
+
+		private string m_DumpPath = ServiceLocator.GlobalSettingsService.DumpPath;
+		public string DumpPath {
+			get => m_DumpPath;
+			set {
+				this.RaiseAndSetIfChanged(ref m_DumpPath, value);
+				ServiceLocator.GlobalSettingsService.DumpPath = value;
 				ServiceLocator.GlobalSettingsService.Save();
 			}
 		}
@@ -48,6 +53,7 @@ namespace CK3MK.ViewModels {
 					return;
 				}
 
+				ServiceLocator.GameModelService.LoadCharacters();
 				BaseGameFilePath = result;
 			}
 		}
@@ -86,7 +92,14 @@ namespace CK3MK.ViewModels {
 				Extensions = { "log" }
 			});
 
-			ServiceLocator.GameModelService.LoadModelDump(result[0]);
+			if(result == null || result.Length == 0) {
+				return;
+			}
+
+			bool success = ServiceLocator.GameModelService.LoadModelDump(result[0]);
+			if (success) {
+				DumpPath = result[0];
+			}
 		}
 	}
 }

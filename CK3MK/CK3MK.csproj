@@ -14,6 +14,6 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Game\" />
+    <Folder Include="Models\Game\Common\" />
   </ItemGroup>
 </Project>
