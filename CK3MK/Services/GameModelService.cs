@@ -14,6 +14,7 @@ namespace CK3MK.Services {
 
 		//Instances
 		private Dictionary<string, GameModelCollection<Character>> m_Characters = new Dictionary<string, GameModelCollection<Character>>();
+		private Dictionary<string, Character> m_AllCharacters = new Dictionary<string, Character>();
 
 		public List<string> GetCountries() {
 			return new List<string>(m_Characters.Keys);
@@ -89,7 +90,7 @@ namespace CK3MK.Services {
 				string fileName = file.Substring(charactersFolder.Length);
 				fileName = fileName.Substring(1, fileName.Length - ".txt".Length - 1);
 
-				ServiceLocator.LoggingService.WriteLine($"=== Reading country {fileName}... ===");
+				ServiceLocator.LoggingService.WriteLine($"=== Reading country {fileName}... ===", LoggingService.LogSeverity.Debug);
 
 				Character currentCharacter = new Character(fileName);
 				GameModelCollection<Character> collection = new GameModelCollection<Character>();
@@ -99,7 +100,7 @@ namespace CK3MK.Services {
 						if(depth == 0) { // New character
 							currentCharacter = new Character(fileName);
 							currentCharacter.Id.StringValue = key;
-							ServiceLocator.LoggingService.WriteLine($"Starting new character with id {key}");
+							ServiceLocator.LoggingService.WriteLine($"Starting new character with id {key}", LoggingService.LogSeverity.Debug);
 						} else {
 							string w = "wait";
 						}
@@ -114,12 +115,21 @@ namespace CK3MK.Services {
 						for (int i = 0; i < depth; i++) {
 							spacing += "    ";
 						}
-						ServiceLocator.LoggingService.WriteLine($"{spacing}Attribute on depth {depth}: {key} -> {value}");
+						ServiceLocator.LoggingService.WriteLine($"{spacing}Attribute on depth {depth}: {key} -> {value}", LoggingService.LogSeverity.Debug);
 					},
 					(depth) => {
 						if (depth == 0) { // End of new character
-							collection.AddModel(currentCharacter);
-							ServiceLocator.LoggingService.WriteLine($"Ending character with id {currentCharacter.Id.StringValue}\n");
+							ServiceLocator.LoggingService.WriteLine($"Ending character with id {currentCharacter.Id.StringValue}\n", LoggingService.LogSeverity.Debug);
+
+							if (m_AllCharacters.ContainsKey(currentCharacter.Id.StringValue)) {
+								string firstFile = m_AllCharacters[currentCharacter.Id.StringValue].FileSourceName;
+								string currentFile = currentCharacter.FileSourceName;
+								ServiceLocator.LoggingService.WriteLine($"Duplicate character found with id {currentCharacter.Id.StringValue}, original from {firstFile}, new from {currentFile}", LoggingService.LogSeverity.Error);
+							} else {
+								collection.AddModel(currentCharacter);
+								m_AllCharacters.Add(currentCharacter.Id.StringValue, currentCharacter);
+							}
+							
 							currentCharacter = null;
 						}
 					});
@@ -127,7 +137,7 @@ namespace CK3MK.Services {
 				m_Characters.Add(fileName, collection);
 				collection.FinalizeCollection();
 
-				ServiceLocator.LoggingService.WriteLine($"=== Finished country {fileName} ===\n");
+				ServiceLocator.LoggingService.WriteLine($"=== Finished country {fileName} ===\n", LoggingService.LogSeverity.Debug);
 			}
 		}
 		#endregion

@@ -40,7 +40,7 @@ namespace CK3MK.Services {
 		public static LoggingService LoggingService {
 			get {
 				if (m_LoggingService == null) {
-					m_LoggingService = new LoggingService();
+					m_LoggingService = new LoggingService(LoggingService.LogSeverity.Error);
 				}
 				return m_LoggingService;
 			}

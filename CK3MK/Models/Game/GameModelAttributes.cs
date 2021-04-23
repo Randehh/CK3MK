@@ -68,11 +68,11 @@ namespace CK3MK.Models.Game {
 			}
 
 			public override string ValueFromString(string s) {
-				return s.Trim('"');
+				return s;
 			}
 
 			public string GetValue(bool includeQuotes) {
-				return includeQuotes ? Value : Value.Trim('"');
+				return Value;
 			}
 		}
 		
@@ -80,7 +80,13 @@ namespace CK3MK.Models.Game {
 			public GameModelAttributeInt(BaseGameModel model, string name) : base(model, name) { }
 
 			public override int ValueFromString(string s) {
-				return int.Parse(s);
+				int result = 0;
+				if( int.TryParse(s, out result)) {
+					return result;
+				} else {
+					ServiceLocator.LoggingService.WriteLine($"Error parsing an integer to string in attribute {Name}: {s}", LoggingService.LogSeverity.Error);
+					return 0;
+				}
 			}
 		}
 		

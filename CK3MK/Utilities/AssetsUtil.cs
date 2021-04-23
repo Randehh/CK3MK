@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Platform;
+using CK3MK.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -62,40 +63,82 @@ namespace CK3MK.Utilities {
 			using (StreamReader sr = new StreamReader(path)) {
 				string line;
 				int depth = 0;
+				bool isComment = false;
+				bool checkStartTable = false;
 
-				string startTableSymbol = "= {";
-				string assignSymbol = " -> ";
-				string equalsSymbol = " = ";
+				HashSet<int> charsToIgnore = new HashSet<int>() {
+					'\t',	//Tabs
+					' ',	//Spaces
+					'\r',	//Carriage return
+				};
+				int newLineChar = '\n';
+				char[] startTableSymbol = new char[2] { '=', '{' };
+				int endTableSymbol = '}';
+				string assignSymbol = "->";
+				string equalsSymbol = "=";
+				char commentSymbol = '#';
 
-				while ((line = sr.ReadLine()) != null) {
-					line = line.Trim();
-					if (line.StartsWith("#")) continue; // Ignore comments
+				StringBuilder currentLine = new StringBuilder();
 
-					if (line.EndsWith(startTableSymbol)) {
-						string keyName = line.Substring(0, line.Length - startTableSymbol.Length).Trim();
-						onStartNewTable(keyName, depth);
-						depth++;
-					} else {
-						if (line.Equals("}")) {
+				while (sr.Peek() >= 0) {
+					int raw = sr.Read();
+					char c = (char)raw;
+
+					if (charsToIgnore.Contains(raw)) continue;
+
+					if (checkStartTable && !isComment) { // New table, call new table action
+						if (c == startTableSymbol[1]) {
+							line = currentLine.ToString();
+							currentLine.Clear();
+							onStartNewTable(line, depth);
+							depth++;
+							checkStartTable = false;
+							continue;
+						} else if(c == newLineChar) { // Read through newlines in this state
+							continue;
+						} else {
+							currentLine.Append(startTableSymbol[0]); // Add withheld character
+							checkStartTable = false;
+						}
+					}
+
+					if (c == newLineChar) { // End line, call assign action
+						isComment = false;
+						line = currentLine.ToString();
+						if (string.IsNullOrWhiteSpace(line)) continue;
+
+						currentLine.Clear();
+
+						string[] keyval = new string[0];
+						if (line.Contains(assignSymbol)) {
+							keyval = line.Split(assignSymbol);
+						} else if (line.Contains(equalsSymbol)) {
+							keyval = line.Split(equalsSymbol);
+						}
+						if (keyval.Length != 2) continue; // Ignore unknown
+
+						string key = keyval[0];
+						string val = keyval[1];
+						if (val.Equals("[unregistered]")) continue; // Ignore unused values
+
+						onAssign(key, val, depth);
+					} else if (c == endTableSymbol) { // End table, call end table action
+						if (!isComment) {
 							depth--;
 							onEndTable(depth);
-						} else {
-							string[] keyval = new string[0];
-							if (line.Contains(assignSymbol)) {
-								keyval = line.Split(assignSymbol);
-							} else if (line.Contains(equalsSymbol)) {
-								keyval = line.Split(equalsSymbol);
-							}
-							if (keyval.Length != 2) continue; // Ignore unknown
+						}
+					} else {
+						if(c == commentSymbol) {
+							isComment = true;
+						}
 
-							string key = keyval[0];
-							string val = keyval[1];
-							if (val.Equals("[unregistered]")) continue; // Ignore unused values
-
-							if (val.Contains("#")) {
-								val = val.Substring(0, val.IndexOf("#") - 1);
+						if (!isComment) {
+							if (c == startTableSymbol[0]) {
+								checkStartTable = true;
+								continue;
 							}
-							onAssign(key, val, depth);
+						
+							currentLine.Append(c);
 						}
 					}
 				}
