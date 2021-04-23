@@ -1,13 +1,11 @@
 ﻿using Avalonia.Controls;
 using CK3MK.Models.Game.History;
 using CK3MK.Services;
-using CK3MK.ViewModels.GameModels.Attributes;
-using CK3MK.Views;
 using CK3MK.Views.GameModels;
+using CK3MK.Views.GameModels.Attributes;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using static CK3MK.Models.Game.GameModelAttributes;
 
 namespace CK3MK.ViewModels.GameModels {
 	public class CharacterDialogVM : ViewModelBase {

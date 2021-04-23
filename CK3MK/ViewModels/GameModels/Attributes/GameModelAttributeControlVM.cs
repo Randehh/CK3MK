@@ -1,14 +1,11 @@
-﻿using CK3MK.Models.Game.Common;
+﻿using Avalonia.Controls;
+using CK3MK.Models.Game.Common;
 using CK3MK.Models.Game.History;
 using CK3MK.Services;
-using CK3MK.Views;
+using CK3MK.Views.GameModels.Attributes;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using static CK3MK.Models.Game.GameModelAttributes;
 
 namespace CK3MK.ViewModels.GameModels.Attributes {
@@ -16,57 +13,53 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 
 		private GameModelAttributeControl m_Window;
 
-		private AttributeType m_AttributeType = AttributeType.Unknown;
+		private Grid m_AttributeDisplayDock;
 
-		public IGameModelAttribute Attribute { get; set; }
-		public bool IsStringAttribute => m_AttributeType == AttributeType.String;
-		public bool IsIntegerAttribute => m_AttributeType == AttributeType.Integer;
-		public bool IsBoolAttribute => m_AttributeType == AttributeType.Bool;
-		public bool IsCharacterAttribute => m_AttributeType == AttributeType.Character;
-		public bool IsDynastyAttribute => m_AttributeType == AttributeType.Dynasty;
-
-		//Character specific
-		private GameModelAttributeCharacter m_CharacterAttribute;
-		public ObservableCollection<Character> CharacterList { get; set; }
-		public Character SelectedCharacter {
-			get => m_CharacterAttribute != null ? m_CharacterAttribute.Value : null;
-			set {
-				if (m_CharacterAttribute != null) m_CharacterAttribute.Value = value;
-			}
+		private IGameModelAttribute m_Attribute;
+		public IGameModelAttribute Attribute {
+			get => m_Attribute;
+			set => this.RaiseAndSetIfChanged(ref m_Attribute, value);
 		}
 
-		//Dynasty specific
-		private GameModelAttributeDynasty m_DynastyAttribute;
-		public ObservableCollection<Dynasty> DynastyList { get; set; }
-		public Dynasty SelectedDynasty {
-			get => m_DynastyAttribute != null ? m_DynastyAttribute.Value : null;
-			set {
-				if (m_DynastyAttribute != null) m_DynastyAttribute.Value = value;
-			}
+		private object m_AttributeContextObject;
+		public object AttributeContextObject {
+			get => m_AttributeContextObject;
+			set => m_AttributeContextObject = value;
 		}
 
 		public GameModelAttributeControlVM(GameModelAttributeControl window, IGameModelAttribute attribute) {
 			m_Window = window;
+			m_Attribute = attribute;
 
+			m_AttributeDisplayDock = m_Window.FindControl<Grid>("AttributeDisplayDock");
 			SetAttributeType(attribute);
-			Attribute = attribute;
 		}
 
 		private void SetAttributeType(IGameModelAttribute attribute) {
-			if (attribute is GameModelAttributeString) m_AttributeType = AttributeType.String;
-			else if (attribute is GameModelAttributeInt)
-				m_AttributeType = AttributeType.Integer;
-			else if (attribute is GameModelAttributeBool) m_AttributeType = AttributeType.Bool;
-			else if (attribute is GameModelAttributeCharacter) {
-				m_AttributeType = AttributeType.Character;
-				CharacterList = ServiceLocator.GameModelService.GetCharacters();
-				m_CharacterAttribute = attribute as GameModelAttributeCharacter;
-				SelectedCharacter = m_CharacterAttribute.Value;
+			if(attribute == null) {
+				return;
+			}
+
+			IControl controlToAdd = null;
+			if (attribute is GameModelAttributeString) {
+				controlToAdd = new GameModelAttributeStringControl();
+			} else if (attribute is GameModelAttributeInt) {
+				controlToAdd = new GameModelAttributeIntegerControl();
+			} else if (attribute is GameModelAttributeBool) {
+				controlToAdd = new GameModelAttributeBooleanControl();
+			} else if (attribute is GameModelAttributeCharacter) {
+				controlToAdd = new GameModelAttributeCharacterControl();
+				AttributeContextObject = ServiceLocator.GameModelService.GetCharacters();
 			} else if (attribute is GameModelAttributeDynasty) {
-				m_AttributeType = AttributeType.Dynasty;
-				DynastyList = ServiceLocator.GameModelService.GetDynasties();
-				m_DynastyAttribute = attribute as GameModelAttributeDynasty;
-				SelectedDynasty = m_DynastyAttribute.Value;
+				controlToAdd = new GameModelAttributeDynastyControl();
+				AttributeContextObject = ServiceLocator.GameModelService.GetDynasties();
+			} else {
+				ServiceLocator.LoggingService.WriteLine($"Cannot find attribute control for attribute {attribute.GetType().Name}", LoggingService.LogSeverity.Critical);
+				return;
+			}
+
+			if (controlToAdd != null) {
+				m_AttributeDisplayDock.Children.Add(controlToAdd);
 			}
 		}
 
