@@ -32,7 +32,7 @@
           <MenuItem Header="Preferences" Command="{ Binding OnCommand_Preferences }"/>
         </MenuItem>
         <MenuItem Header="Window">
-          <MenuItem Header="Character inspector" Command="{ Binding OnCommand_CharacterInspector }"/>
+          <MenuItem Header="Character editor" Command="{ Binding OnCommand_CharacterInspector }"/>
         </MenuItem>
       </Menu>
     </DockPanel>

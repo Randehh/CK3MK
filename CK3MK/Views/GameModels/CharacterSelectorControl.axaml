@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="CK3MK.Views.GameModels.CharacterSelectorControl">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="auto"/>
+      <RowDefinition Height="10"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto"/>
+        <ColumnDefinition Width="5"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      
+      <TextBlock Text="Country" Grid.Column="0" VerticalAlignment="Center"/>
+      <DropDown Items="{ Binding Countries }" SelectedItem="{ Binding SelectedCountry }" Grid.Column="2" HorizontalAlignment="Stretch"/>
+    </Grid>
+
+    <Grid Grid.Row="2">
+      <ListBox Items="{ Binding Characters }" SelectedItem="{ Binding SelectedCharacter }">
+        <ListBox.ItemTemplate>
+          <DataTemplate>
+            <TextBlock Text="{ Binding Name.StringValue }" />
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
+  </Grid>
+</UserControl>
