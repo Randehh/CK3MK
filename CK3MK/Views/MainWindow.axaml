@@ -31,8 +31,10 @@
         <MenuItem Header="Edit">
           <MenuItem Header="Preferences" Command="{ Binding OnCommand_Preferences }"/>
         </MenuItem>
-        <MenuItem Header="Window">
-          <MenuItem Header="Character editor" Command="{ Binding OnCommand_CharacterInspector }"/>
+        <MenuItem Header="Editors">
+          <MenuItem Header="History">
+            <MenuItem Header="Character editor" Command="{ Binding OnCommand_CharacterInspector }"/>
+          </MenuItem>
         </MenuItem>
       </Menu>
     </DockPanel>

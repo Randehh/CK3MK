@@ -2,12 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 
 namespace CK3MK.Services {
 	public class GlobalSettingsService {
 
-		private static string RootFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CK3MK");
+		public static string RootFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CK3MK");
 		private static string SettingsFile => Path.Combine(RootFolder, "Settings.json");
 
 		public static GlobalSettingsService Load() {

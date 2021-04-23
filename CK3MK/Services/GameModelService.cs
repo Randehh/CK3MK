@@ -88,6 +88,9 @@ namespace CK3MK.Services {
 			foreach (string file in Directory.GetFiles(charactersFolder)) {
 				string fileName = file.Substring(charactersFolder.Length);
 				fileName = fileName.Substring(1, fileName.Length - ".txt".Length - 1);
+
+				ServiceLocator.LoggingService.WriteLine($"=== Reading country {fileName}... ===");
+
 				Character currentCharacter = new Character(fileName);
 				GameModelCollection<Character> collection = new GameModelCollection<Character>();
 
@@ -96,6 +99,7 @@ namespace CK3MK.Services {
 						if(depth == 0) { // New character
 							currentCharacter = new Character(fileName);
 							currentCharacter.Id.StringValue = key;
+							ServiceLocator.LoggingService.WriteLine($"Starting new character with id {key}");
 						} else {
 							string w = "wait";
 						}
@@ -106,16 +110,24 @@ namespace CK3MK.Services {
 						} else {
 							// Advanced attributes (???)
 						}
+						string spacing = "";
+						for (int i = 0; i < depth; i++) {
+							spacing += "    ";
+						}
+						ServiceLocator.LoggingService.WriteLine($"{spacing}Attribute on depth {depth}: {key} -> {value}");
 					},
 					(depth) => {
 						if (depth == 0) { // End of new character
 							collection.AddModel(currentCharacter);
+							ServiceLocator.LoggingService.WriteLine($"Ending character with id {currentCharacter.Id.StringValue}\n");
 							currentCharacter = null;
 						}
 					});
 
 				m_Characters.Add(fileName, collection);
 				collection.FinalizeCollection();
+
+				ServiceLocator.LoggingService.WriteLine($"=== Finished country {fileName} ===\n");
 			}
 		}
 		#endregion

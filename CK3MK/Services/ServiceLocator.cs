@@ -35,5 +35,15 @@ namespace CK3MK.Services {
 				return m_GameModelService;
 			}
 		}
+
+		private static LoggingService m_LoggingService = null;
+		public static LoggingService LoggingService {
+			get {
+				if (m_LoggingService == null) {
+					m_LoggingService = new LoggingService();
+				}
+				return m_LoggingService;
+			}
+		}
 	}
 }
