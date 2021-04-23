@@ -27,6 +27,8 @@
               </Style>
             </MenuItem.Styles>
           </MenuItem>  
+          <Separator/>
+          <MenuItem Header="Open log file" Command="{ Binding OnCommand_OpenLog }"/>
         </MenuItem>
         <MenuItem Header="Edit">
           <MenuItem Header="Preferences" Command="{ Binding OnCommand_Preferences }"/>

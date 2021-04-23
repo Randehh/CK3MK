@@ -6,6 +6,7 @@ using CK3MK.Views;
 using CK3MK.Views.GameModels;
 using ReactiveUI;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Reactive;
 
@@ -14,9 +15,13 @@ namespace CK3MK.ViewModels {
 
 		private MainWindow m_Window;
 
+		//File
 		public ReactiveCommand<Unit, Unit> OnCommand_New { get; }
 		public ReactiveCommand<Unit, Unit> OnCommand_Open { get; }
 		public ReactiveCommand<string, Unit> OnCommand_OpenRecent { get; }
+		public ReactiveCommand<Unit, Unit> OnCommand_OpenLog { get; }
+
+		//Windows
 		public ReactiveCommand<Unit, Unit> OnCommand_Preferences { get; }
 		public ReactiveCommand<Unit, Unit> OnCommand_CharacterInspector { get; }
 
@@ -28,6 +33,7 @@ namespace CK3MK.ViewModels {
 			OnCommand_New = ReactiveCommand.Create(CreateNewProject);
 			OnCommand_Open = ReactiveCommand.Create(OpenProjectDialog);
 			OnCommand_OpenRecent = ReactiveCommand.Create<string>(OpenProjectByPath);
+			OnCommand_OpenLog = ReactiveCommand.Create(OpenLog);
 			OnCommand_Preferences = ReactiveCommand.Create(OpenPreferences);
 			OnCommand_CharacterInspector = ReactiveCommand.Create(OpenCharacterInspector);
 
@@ -80,6 +86,14 @@ namespace CK3MK.ViewModels {
 			if(result != null && result.Length != 0) {
 				OpenProjectByPath(result[0]);
 			}
+		}
+
+		private void OpenLog() {
+			new Process {
+				StartInfo = new ProcessStartInfo(LoggingService.LogFilePath) {
+					UseShellExecute = true
+				}
+			}.Start();
 		}
 
 		private async void OpenPreferences() {
