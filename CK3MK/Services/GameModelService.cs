@@ -1,4 +1,5 @@
 ﻿using CK3MK.Models.Game;
+using CK3MK.Models.Game.Common;
 using CK3MK.Models.Game.History;
 using CK3MK.Utilities;
 using System.Collections.Generic;
@@ -13,26 +14,42 @@ namespace CK3MK.Services {
 		private Dictionary<string, string> m_GlobalPromotes = new Dictionary<string, string>();
 
 		//Instances
-		private Dictionary<string, GameModelCollection<Character>> m_Characters = new Dictionary<string, GameModelCollection<Character>>();
+		private Dictionary<string, ObservableCollection<Character>> m_CharactersByCountry = new Dictionary<string, ObservableCollection<Character>>();
 		private Dictionary<string, Character> m_AllCharacters = new Dictionary<string, Character>();
+		private Dictionary<string, Dynasty> m_Dynasties = new Dictionary<string, Dynasty>();
 
 		public List<string> GetCountries() {
-			return new List<string>(m_Characters.Keys);
+			return new List<string>(m_CharactersByCountry.Keys);
+		}
+
+		public ObservableCollection<Character> GetCharacters() {
+			return new ObservableCollection<Character>(m_AllCharacters.Values);
 		}
 
 		public ObservableCollection<Character> GetCharacters(string country) {
-			if (!m_Characters.ContainsKey(country)) {
+			if (!m_CharactersByCountry.ContainsKey(country)) {
 				return new ObservableCollection<Character>();
 			}
 
-			return m_Characters[country].Collection;
+			return m_CharactersByCountry[country];
 		}
 
-		public Character GetCharacter(string country, string id) {
-			if (!m_Characters.ContainsKey(country)) {
+		public Character GetCharacter(string id) {
+			if (!m_AllCharacters.ContainsKey(id)) {
 				return null;
 			}
-			return m_Characters[country].GetById(id);
+			return m_AllCharacters[id];
+		}
+
+		public ObservableCollection<Dynasty> GetDynasties() {
+			return new ObservableCollection<Dynasty>(m_Dynasties.Values);
+		}
+
+		public Dynasty GetDynasty(string id) {
+			if (!m_Dynasties.ContainsKey(id)) {
+				return null;
+			}
+			return m_Dynasties[id];
 		}
 
 		#region Model dump
@@ -84,61 +101,30 @@ namespace CK3MK.Services {
 		#endregion
 
 		#region Data load
+		public void LoadAllData() {
+			LoadCharacters();
+			LoadDynasties();
+			PostLoadLink();
+		}
+		
 		public void LoadCharacters() {
 			string charactersFolder = GameModelPathUtil.Characters;
-			foreach (string file in Directory.GetFiles(charactersFolder)) {
-				string fileName = file.Substring(charactersFolder.Length);
-				fileName = fileName.Substring(1, fileName.Length - ".txt".Length - 1);
+			m_AllCharacters = AssetsUtil.LoadModelsFromFolder<Character>(charactersFolder, (character) => {
+				if (!m_CharactersByCountry.ContainsKey(character.FileSourceName)) {
+					m_CharactersByCountry.Add(character.FileSourceName, new ObservableCollection<Character>());
+				}
+				m_CharactersByCountry[character.FileSourceName].Add(character);
+			});
+		}
+		
+		public void LoadDynasties() {
+			string dynastiesFolder = GameModelPathUtil.Dynasties;
+			m_Dynasties = AssetsUtil.LoadModelsFromFolder<Dynasty>(dynastiesFolder);
+		}
 
-				ServiceLocator.LoggingService.WriteLine($"=== Reading country {fileName}... ===", LoggingService.LogSeverity.Debug);
-
-				Character currentCharacter = new Character(fileName);
-				GameModelCollection<Character> collection = new GameModelCollection<Character>();
-
-				AssetsUtil.ReadCK3ConfigFile(Path.Combine(charactersFolder, file),
-					(key, depth) => {
-						if(depth == 0) { // New character
-							currentCharacter = new Character(fileName);
-							currentCharacter.Id.StringValue = key;
-							ServiceLocator.LoggingService.WriteLine($"Starting new character with id {key}", LoggingService.LogSeverity.Debug);
-						} else {
-							string w = "wait";
-						}
-					},
-					(key, value, depth) => {
-						if (depth == 1) {
-							currentCharacter.SetAttributeValue(key, value);
-						} else {
-							// Advanced attributes (???)
-						}
-						string spacing = "";
-						for (int i = 0; i < depth; i++) {
-							spacing += "    ";
-						}
-						ServiceLocator.LoggingService.WriteLine($"{spacing}Attribute on depth {depth}: {key} -> {value}", LoggingService.LogSeverity.Debug);
-					},
-					(depth) => {
-						if (depth == 0) { // End of new character
-							ServiceLocator.LoggingService.WriteLine($"Ending character with id {currentCharacter.Id.StringValue}\n", LoggingService.LogSeverity.Debug);
-
-							if (m_AllCharacters.ContainsKey(currentCharacter.Id.StringValue)) {
-								string firstFile = m_AllCharacters[currentCharacter.Id.StringValue].FileSourceName;
-								string currentFile = currentCharacter.FileSourceName;
-								ServiceLocator.LoggingService.WriteLine($"Duplicate character found with id {currentCharacter.Id.StringValue}, original from {firstFile}, new from {currentFile}", LoggingService.LogSeverity.Error);
-							} else {
-								collection.AddModel(currentCharacter);
-								m_AllCharacters.Add(currentCharacter.Id.StringValue, currentCharacter);
-							}
-							
-							currentCharacter = null;
-						}
-					});
-
-				m_Characters.Add(fileName, collection);
-				collection.FinalizeCollection();
-
-				ServiceLocator.LoggingService.WriteLine($"=== Finished country {fileName} ===\n", LoggingService.LogSeverity.Debug);
-			}
+		private void PostLoadLink() {
+			foreach (Character c in m_AllCharacters.Values) c.DoPostLinkAttributes();
+			foreach (Dynasty d in m_Dynasties.Values) d.DoPostLinkAttributes();
 		}
 		#endregion
 	}

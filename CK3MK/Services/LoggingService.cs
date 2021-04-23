@@ -29,7 +29,6 @@ namespace CK3MK.Services {
 			if ((int)severity <= (int)m_Severity) {
 				string output = $"{DateTime.Now.ToLongTimeString()} {GetSeverityTag(severity)} {s}";
 				m_LogWriter.WriteLine(output);
-				Debug.WriteLine(output);
 				m_LogWriter.Flush();
 			}
 		}

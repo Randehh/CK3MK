@@ -1,0 +1,40 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:v="using:CK3MK.Views"
+        xmlns:va="using:CK3MK.Views.GameModels.Common"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
+        CanResize="False"
+        SizeToContent="Width"
+        WindowStartupLocation="CenterOwner"
+        x:Class="CK3MK.Views.GameModels.Common.DynastyDialog"
+        Title="Dynasty editor">
+  <Grid Margin="10">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="300"/>
+      <ColumnDefinition Width="15"/>
+      <ColumnDefinition Width="600"/>
+    </Grid.ColumnDefinitions>
+
+    <va:DynastySelectorControl Grid.Column="0" Margin="0,0,5,0"/>
+    
+    <Grid Grid.Column="1" Margin="7" Background="Gray"/>
+
+    <Grid Grid.Column="2" Margin="5,0,0,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="10"/>
+        <RowDefinition Height="auto"/>
+      </Grid.RowDefinitions>
+      
+      <TextBlock Grid.Row="0" Text="Dynasty details" FontWeight="Bold" FontSize="20"/>
+      
+      <StackPanel x:Name="AttributeStackPanel" Grid.Row="2">
+        <v:GameModelAttributeControl DataContext="{ Binding SelectedDynasty.Name }"/>
+        <v:GameModelAttributeControl DataContext="{ Binding SelectedDynasty.Prefix }"/>
+        <v:GameModelAttributeControl DataContext="{ Binding SelectedDynasty.Culture }"/>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</Window>

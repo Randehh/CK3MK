@@ -4,6 +4,7 @@ using CK3MK.Services;
 using CK3MK.Utilities;
 using CK3MK.Views;
 using CK3MK.Views.GameModels;
+using CK3MK.Views.GameModels.Common;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -23,6 +24,7 @@ namespace CK3MK.ViewModels {
 
 		//Windows
 		public ReactiveCommand<Unit, Unit> OnCommand_Preferences { get; }
+		public ReactiveCommand<Unit, Unit> OnCommand_DynastyEditor { get; }
 		public ReactiveCommand<Unit, Unit> OnCommand_CharacterInspector { get; }
 
 		public ObservableCollection<DynamicMenuItem> RecentProjectItems { get; set; } = new ObservableCollection<DynamicMenuItem>();
@@ -35,6 +37,7 @@ namespace CK3MK.ViewModels {
 			OnCommand_OpenRecent = ReactiveCommand.Create<string>(OpenProjectByPath);
 			OnCommand_OpenLog = ReactiveCommand.Create(OpenLog);
 			OnCommand_Preferences = ReactiveCommand.Create(OpenPreferences);
+			OnCommand_DynastyEditor = ReactiveCommand.Create(OpenDynastyEditor);
 			OnCommand_CharacterInspector = ReactiveCommand.Create(OpenCharacterInspector);
 
 			m_Window.FindControl<MenuItem>("RecentProjectsMenuItem").ResourcesChanged += (sender, args) => { RefreshRecentProjects(); };
@@ -49,7 +52,7 @@ namespace CK3MK.ViewModels {
 			}
 
 			if (!string.IsNullOrWhiteSpace(ServiceLocator.GlobalSettingsService.BaseGameFilePath)) {
-				ServiceLocator.GameModelService.LoadCharacters();
+				ServiceLocator.GameModelService.LoadAllData();
 			}
 		}
 
@@ -107,6 +110,11 @@ namespace CK3MK.ViewModels {
 
 		private void OpenProject(object e, ModProject project) {
 			string d = "Project loaded = " + project.Name;
+		}
+
+		private async void OpenDynastyEditor() {
+			DynastyDialog newDialog = new DynastyDialog();
+			await newDialog.ShowDialog(m_Window);
 		}
 
 		private async void OpenCharacterInspector() {

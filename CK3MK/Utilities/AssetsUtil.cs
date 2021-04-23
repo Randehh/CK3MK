@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Platform;
+using CK3MK.Models.Game;
 using CK3MK.Services;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,15 @@ namespace CK3MK.Utilities {
 		public static T DeserializeFromJson<T>(string path) where T : class {
 			string jsonString = File.ReadAllText(path);
 			return JsonSerializer.Deserialize<T>(jsonString);
+		}
+
+		public static void ForEachFileInFolder(string path, Action<string, string, string> doFile) {
+			foreach (string file in Directory.GetFiles(path)) {
+				if (!file.EndsWith(".txt")) continue;
+				string fileName = Path.GetFileName(file);
+				string fileNameNoExtension = Path.GetFileNameWithoutExtension(file);
+				doFile(file, fileName, fileNameNoExtension);
+			}
 		}
 
 		public static bool ReadCK3ConfigFile(string path, Action<string, int> onStartNewTable, Action<string, string, int> onAssign, Action<int> onEndTable) {
@@ -144,6 +154,63 @@ namespace CK3MK.Utilities {
 				}
 			}
 			return true;
+		}
+
+		public static Dictionary<string, T> LoadModelsFromFolder<T>(string path, Action<T> OnModelLoaded = null) where T : BaseGameModel {
+			string modelName = nameof(T);
+			Dictionary<string, T> models = new Dictionary<string, T>();
+
+			ForEachFileInFolder(path, (path, fileName, fileNameNoExtension) => {
+				ServiceLocator.LoggingService.WriteLine($"=== Reading {modelName} file {fileName}... ===", LoggingService.LogSeverity.Debug);
+
+				T currentModel = (T)Activator.CreateInstance(typeof(T), fileNameNoExtension);
+
+				ReadCK3ConfigFile(path,
+					(key, depth) => {
+						if (depth == 0) { // New model
+							currentModel = (T)Activator.CreateInstance(typeof(T), fileName);
+							currentModel.Id.StringValue = key;
+							ServiceLocator.LoggingService.WriteLine($"Starting new {modelName} with id {key}", LoggingService.LogSeverity.Debug);
+						} else {
+							string w = "wait";
+						}
+					},
+					(key, value, depth) => {
+						if (depth == 1) {
+							currentModel.SetAttributeValue(key, value);
+						} else {
+							// Advanced attributes (???)
+						}
+						string spacing = "";
+						for (int i = 0; i < depth; i++) {
+							spacing += "    ";
+						}
+						ServiceLocator.LoggingService.WriteLine($"{spacing}Attribute on depth {depth}: {key} -> {value}", LoggingService.LogSeverity.Debug);
+					},
+					(depth) => {
+						if (depth == 0) { // End of new model
+							ServiceLocator.LoggingService.WriteLine($"Ending {modelName} with id {currentModel.Id.StringValue}\n", LoggingService.LogSeverity.Debug);
+
+							if (models.ContainsKey(currentModel.Id.StringValue)) {
+								string firstFile = models[currentModel.Id.StringValue].FileSourceName;
+								string currentFile = currentModel.FileSourceName;
+								ServiceLocator.LoggingService.WriteLine($"Duplicate {modelName} found with id {currentModel.Id.StringValue}, original from {firstFile}, new from {currentFile}", LoggingService.LogSeverity.Error);
+							} else {
+								models.Add(currentModel.Id.StringValue, currentModel);
+
+								if(OnModelLoaded!= null) {
+									OnModelLoaded(currentModel);
+								}
+							}
+
+							currentModel = null;
+						}
+					});
+
+				ServiceLocator.LoggingService.WriteLine($"=== Finished {modelName} {fileName} ===\n", LoggingService.LogSeverity.Debug);
+			});
+
+			return models;
 		}
 	}
 }

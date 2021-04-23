@@ -53,7 +53,7 @@ namespace CK3MK.ViewModels {
 					return;
 				}
 
-				ServiceLocator.GameModelService.LoadCharacters();
+				ServiceLocator.GameModelService.LoadAllData();
 				BaseGameFilePath = result;
 			}
 		}

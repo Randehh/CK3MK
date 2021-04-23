@@ -18,11 +18,14 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Game\Common\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="Views\GameModels\Attributes\GameModelAttributeControl.axaml.cs">
       <DependentUpon>GameModelAttributeControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\GameModels\Common\DynastySelectorControl.axaml.cs">
+      <DependentUpon>DynastySelectorControl.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\GameModels\Common\DynastyDialog.axaml.cs">
+      <DependentUpon>DynastyDialog.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

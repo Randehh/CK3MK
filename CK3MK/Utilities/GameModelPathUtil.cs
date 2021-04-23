@@ -9,6 +9,9 @@ namespace CK3MK.Utilities {
 		public static string Common => Path.Combine(RootFolder, "common");
 		public static string History => Path.Combine(RootFolder, "history");
 
+		//Common folders
+		public static string Dynasties => Path.Combine(Common, "dynasties");
+
 		//History folders
 		public static string Characters => Path.Combine(History, "characters");
 	}

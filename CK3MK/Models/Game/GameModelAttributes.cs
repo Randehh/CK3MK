@@ -1,4 +1,5 @@
-﻿using CK3MK.Models.Game.History;
+﻿using CK3MK.Models.Game.Common;
+using CK3MK.Models.Game.History;
 using CK3MK.Services;
 using ReactiveUI;
 using System;
@@ -47,7 +48,6 @@ namespace CK3MK.Models.Game {
 				get => Value == null ? "" : ValueToString(Value);
 				set {
 					Value = ValueFromString(value);
-					IsAssigned = true;
 				}
 			}
 
@@ -75,13 +75,13 @@ namespace CK3MK.Models.Game {
 				return Value;
 			}
 		}
-		
+
 		public class GameModelAttributeInt : GameModelAttribute<int> {
 			public GameModelAttributeInt(BaseGameModel model, string name) : base(model, name) { }
 
 			public override int ValueFromString(string s) {
 				int result = 0;
-				if( int.TryParse(s, out result)) {
+				if (int.TryParse(s, out result)) {
 					return result;
 				} else {
 					ServiceLocator.LoggingService.WriteLine($"Error parsing an integer to string in attribute {Name}: {s}", LoggingService.LogSeverity.Error);
@@ -89,7 +89,7 @@ namespace CK3MK.Models.Game {
 				}
 			}
 		}
-		
+
 		public class GameModelAttributeBool : GameModelAttribute<bool> {
 			public GameModelAttributeBool(BaseGameModel model, string name) : base(model, name) { }
 
@@ -117,11 +117,26 @@ namespace CK3MK.Models.Game {
 			}
 
 			public override Character ValueFromString(string s) {
-				return ServiceLocator.GameModelService.GetCharacter(FileName, s);
+				return ServiceLocator.GameModelService.GetCharacter(s);
 			}
 
 			public override string ValueToString(Character o) {
-				if(o != null) {
+				if (o != null) {
+					return o.Name.StringValue;
+				}
+				return null;
+			}
+		}
+
+		public class GameModelAttributeDynasty : GameModelAttribute<Dynasty> {
+			public GameModelAttributeDynasty(BaseGameModel model, string name) : base(model, name, true) { }
+
+			public override Dynasty ValueFromString(string s) {
+				return ServiceLocator.GameModelService.GetDynasty(s);
+			}
+
+			public override string ValueToString(Dynasty o) {
+				if (o != null) {
 					return o.Name.StringValue;
 				}
 				return null;
