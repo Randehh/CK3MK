@@ -67,7 +67,7 @@ namespace CK3MK.ViewModels.GameModels {
 			m_Window = window;
 
 			Countries = new ObservableCollection<string>(ServiceLocator.ModelCacheService.Countries);
-			StackPanel attributeStackPanel = m_Window.FindControl<StackPanel>("AttributeStackPanel");
+			StackPanel attributeStackPanel = m_Window.FindControl<CharacterDetailsControl>("DetailsControl").FindControl<StackPanel>("AttributeStackPanel");
 			foreach(IControl c in attributeStackPanel.Children) {
 				m_Attributes.Add(c as GameModelAttributeControl);
 			}

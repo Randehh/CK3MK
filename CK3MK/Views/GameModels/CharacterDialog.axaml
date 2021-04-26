@@ -2,7 +2,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:v="using:CK3MK.Views.GameModels.Attributes"
         xmlns:va="using:CK3MK.Views.GameModels"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
         CanResize="False"
@@ -21,37 +20,6 @@
     
     <Grid Grid.Column="1" Margin="7" Background="Gray"/>
 
-    <Grid Grid.Column="2" Margin="5,0,0,0">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="auto"/>
-        <RowDefinition Height="10"/>
-        <RowDefinition Height="auto"/>
-      </Grid.RowDefinitions>
-      
-      <TextBlock Grid.Row="0" Text="Character details" FontWeight="Bold" FontSize="20"/>
-      
-      <StackPanel x:Name="AttributeStackPanel" Grid.Row="2">
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Name }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Dna }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Female }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Martial }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Prowess }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Diplomacy }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Intrigue }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Stewardship }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Learning }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Father }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Mother }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.DisallowRandomTraits }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Religion }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Culture }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Dynasty }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.DynastyHouse }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.GiveNickname }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Sexuality }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Health }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding SelectedCharacter.Fertility }"/>
-      </StackPanel>
-    </Grid>
+    <va:CharacterDetailsControl Grid.Column="2" Margin="5,0,0,0" x:Name="DetailsControl"/>
   </Grid>
 </Window>
