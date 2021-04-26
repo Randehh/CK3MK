@@ -7,9 +7,12 @@ using System;
 namespace CK3MK.Models.Game {
 	public class GameModelAttributes {
 		public interface IGameModelAttribute {
+			public string Name { get; set; }
 			public BaseGameModel Model { get; set; }
 			public Action OnValueChanged { get; set; }
 			public string StringValue { get; set; }
+			public string RawStringValue { get; set; }
+			public bool IsAssigned { get; set; }
 			public bool IsPostLinkAttribute { get; set; }
 		}
 
@@ -44,11 +47,22 @@ namespace CK3MK.Models.Game {
 			}
 
 			//Viewmodel functions
+			private string m_StringValue = "";
 			public string StringValue {
 				get => Value == null ? "" : ValueToString(Value);
 				set {
-					Value = ValueFromString(value);
+					m_StringValue = value;
+					if (string.IsNullOrWhiteSpace(value)) {
+						Value = default;
+					} else {
+						Value = ValueFromString(value);
+					}
 				}
+			}
+
+			public string RawStringValue {
+				get => m_StringValue;
+				set => m_StringValue = value;
 			}
 
 			public virtual T ValueFromString(string s) {
@@ -117,7 +131,7 @@ namespace CK3MK.Models.Game {
 			}
 
 			public override Character ValueFromString(string s) {
-				return ServiceLocator.GameModelService.GetCharacter(s);
+				return ServiceLocator.ModelCacheService.Characters.GetFullModel(s);
 			}
 
 			public override string ValueToString(Character o) {
@@ -132,7 +146,7 @@ namespace CK3MK.Models.Game {
 			public GameModelAttributeDynasty(BaseGameModel model, string name) : base(model, name, true) { }
 
 			public override Dynasty ValueFromString(string s) {
-				return ServiceLocator.GameModelService.GetDynasty(s);
+				return ServiceLocator.ModelCacheService.Dynasties.GetFullModel(s);
 			}
 
 			public override string ValueToString(Dynasty o) {

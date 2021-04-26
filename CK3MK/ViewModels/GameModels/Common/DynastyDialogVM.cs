@@ -1,4 +1,5 @@
-﻿using CK3MK.Models.Game.Common;
+﻿using CK3MK.Models.Game;
+using CK3MK.Models.Game.Common;
 using CK3MK.Services;
 using CK3MK.Views.GameModels.Common;
 using ReactiveUI;
@@ -9,13 +10,21 @@ namespace CK3MK.ViewModels.GameModels.Common {
 
 		private DynastyDialog m_Window;
 
-
-		private ObservableCollection<Dynasty> m_Dynasties = new ObservableCollection<Dynasty>();
-		public ObservableCollection<Dynasty> Dynasties {
+		private ObservableCollection<SimpleGameModel<Dynasty>> m_Dynasties = new ObservableCollection<SimpleGameModel<Dynasty>>();
+		public ObservableCollection<SimpleGameModel<Dynasty>> Dynasties {
 			get => m_Dynasties;
 			set {
 				this.RaiseAndSetIfChanged(ref m_Dynasties, value);
-				SelectedDynasty = value[0];
+				SelectedDynastyIndex = 0;
+			}
+		}
+
+		private int m_SelectedDynastyIndex;
+		public int SelectedDynastyIndex {
+			get => m_SelectedDynastyIndex;
+			set {
+				this.RaiseAndSetIfChanged(ref m_SelectedDynastyIndex, value);
+				SelectedDynasty = m_Dynasties[m_SelectedDynastyIndex].GetFullModel();
 			}
 		}
 
@@ -28,7 +37,7 @@ namespace CK3MK.ViewModels.GameModels.Common {
 		public DynastyDialogVM(DynastyDialog window) {
 			m_Window = window;
 
-			Dynasties = new ObservableCollection<Dynasty>(ServiceLocator.GameModelService.GetDynasties());
+			Dynasties = ServiceLocator.ModelCacheService.Dynasties.GetObservableCollection();
 		}
 	}
 }

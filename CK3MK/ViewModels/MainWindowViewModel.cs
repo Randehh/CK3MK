@@ -48,11 +48,11 @@ namespace CK3MK.ViewModels {
 
 			//Load existing data
 			if (!string.IsNullOrWhiteSpace(ServiceLocator.GlobalSettingsService.DumpPath)) {
-				ServiceLocator.GameModelService.LoadModelDump(ServiceLocator.GlobalSettingsService.DumpPath);
+				ServiceLocator.GameDumpService.LoadModelDump(ServiceLocator.GlobalSettingsService.DumpPath);
 			}
 
 			if (!string.IsNullOrWhiteSpace(ServiceLocator.GlobalSettingsService.BaseGameFilePath)) {
-				ServiceLocator.GameModelService.LoadAllData();
+				ServiceLocator.ModelCacheService.LoadAllData();
 			}
 		}
 

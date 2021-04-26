@@ -53,7 +53,7 @@ namespace CK3MK.ViewModels {
 					return;
 				}
 
-				ServiceLocator.GameModelService.LoadAllData();
+				ServiceLocator.ModelCacheService.LoadAllData();
 				BaseGameFilePath = result;
 			}
 		}
@@ -96,7 +96,7 @@ namespace CK3MK.ViewModels {
 				return;
 			}
 
-			bool success = ServiceLocator.GameModelService.LoadModelDump(result[0]);
+			bool success = ServiceLocator.GameDumpService.LoadModelDump(result[0]);
 			if (success) {
 				DumpPath = result[0];
 			}

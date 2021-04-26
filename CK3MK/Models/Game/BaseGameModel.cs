@@ -1,5 +1,4 @@
-﻿using ReactiveUI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
@@ -8,12 +7,14 @@ using static CK3MK.Models.Game.GameModelAttributes;
 namespace CK3MK.Models.Game {
 	public class BaseGameModel {
 
+		public string CacheId => $"{FileSourceName}_{Id.Value}";
+
 		//Base attributes
 		public string FileSourceName { get; set; }
 		public GameModelAttributeString Id { get; set; }
 		public GameModelAttributeString Name { get; set; }
 
-		private List<Tuple<IGameModelAttribute, string>> m_PostLinkPairs = new List<Tuple<IGameModelAttribute, string>>();
+		private List<Tuple<IGameModelAttribute, string, bool>> m_PostLinkPairs = new List<Tuple<IGameModelAttribute, string, bool>>();
 
 		public BaseGameModel(string fileName) {
 			FileSourceName = fileName;
@@ -34,7 +35,7 @@ namespace CK3MK.Models.Game {
 			return attribute;
 		}
 
-		public void SetAttributeValue(string attributeKey, string value) {
+		public void SetAttributeValue(string attributeKey, string value, bool isAssigned = true) {
 			string propertyKey = TitleCaseConvert(attributeKey);
 			Type thisType = GetType();
 			PropertyInfo property = thisType.GetProperty(propertyKey);
@@ -42,9 +43,11 @@ namespace CK3MK.Models.Game {
 				IGameModelAttribute attribute = property.GetValue(this) as IGameModelAttribute;
 				if (attribute != null) {
 					if (attribute.IsPostLinkAttribute) {
-						m_PostLinkPairs.Add(new Tuple<IGameModelAttribute, string>(attribute, value));
+						attribute.RawStringValue = value;
+						m_PostLinkPairs.Add(new Tuple<IGameModelAttribute, string, bool>(attribute, value, isAssigned));
 					} else {
 						attribute.StringValue = value;
+						attribute.IsAssigned = isAssigned;
 					}
 				} else {
 					throw new Exception($"Attribute of type {attributeKey} is not derived from {nameof(IGameModelAttribute)}");
@@ -59,14 +62,19 @@ namespace CK3MK.Models.Game {
 		}
 
 		public void DoPostLinkAttributes() {
-			foreach(Tuple<IGameModelAttribute, string> pair in m_PostLinkPairs) {
+			foreach(Tuple<IGameModelAttribute, string, bool> pair in m_PostLinkPairs) {
 				pair.Item1.StringValue = pair.Item2;
+				pair.Item1.IsAssigned = pair.Item3;
 			}
 			m_PostLinkPairs.Clear();
 		}
 
 		private void OnAttributeChanged() {
 			OnModelChanged();
+		}
+
+		public string GetListEntryName() {
+			return Name.Value;
 		}
 	}
 }

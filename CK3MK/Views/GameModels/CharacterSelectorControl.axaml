@@ -23,10 +23,10 @@
     </Grid>
 
     <Grid Grid.Row="2">
-      <ListBox Items="{ Binding Characters }" SelectedItem="{ Binding SelectedCharacter }">
+      <ListBox Items="{ Binding Characters }" SelectedIndex="{ Binding SelectedCharacterIndex }">
         <ListBox.ItemTemplate>
           <DataTemplate>
-            <TextBlock Text="{ Binding Name.StringValue }" />
+            <TextBlock Text="{ Binding ListEntryName }" />
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>

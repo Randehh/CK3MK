@@ -154,9 +154,8 @@ namespace CK3MK.Utilities {
 			return true;
 		}
 
-		public static Dictionary<string, T> LoadModelsFromFolder<T>(string path, Action<T> OnModelLoaded = null) where T : BaseGameModel {
-			string modelName = nameof(T);
-			Dictionary<string, T> models = new Dictionary<string, T>();
+		public static void LoadModelsFromFolder<T>(GameModelCache<T> cache, string path, Action<T, WeakReference> OnModelLoaded = null) where T : BaseGameModel {
+			string modelName = typeof(T).Name;
 
 			ForEachFileInFolder(path, (path, fileName, fileNameNoExtension) => {
 				ServiceLocator.LoggingService.WriteLine($"=== Reading {modelName} file {fileName}... ===", LoggingService.LogSeverity.Debug);
@@ -166,7 +165,7 @@ namespace CK3MK.Utilities {
 				ReadCK3ConfigFile(path,
 					(key, depth) => {
 						if (depth == 0) { // New model
-							currentModel = (T)Activator.CreateInstance(typeof(T), fileName);
+							currentModel = (T)Activator.CreateInstance(typeof(T), fileNameNoExtension);
 							currentModel.Id.StringValue = key;
 							ServiceLocator.LoggingService.WriteLine($"Starting new {modelName} with id {key}", LoggingService.LogSeverity.Debug);
 						} else {
@@ -175,7 +174,7 @@ namespace CK3MK.Utilities {
 					},
 					(key, value, depth) => {
 						if (depth == 1) {
-							currentModel.SetAttributeValue(key, value);
+							currentModel.SetAttributeValue(key, value, true);
 						} else {
 							// Advanced attributes (???)
 						}
@@ -189,15 +188,15 @@ namespace CK3MK.Utilities {
 						if (depth == 0) { // End of new model
 							ServiceLocator.LoggingService.WriteLine($"Ending {modelName} with id {currentModel.Id.StringValue}\n", LoggingService.LogSeverity.Debug);
 
-							if (models.ContainsKey(currentModel.Id.StringValue)) {
-								string firstFile = models[currentModel.Id.StringValue].FileSourceName;
+							if (cache.ContainsKey(currentModel.Id.StringValue)) {
+								string firstFile = cache.GetSourceFile(currentModel.Id.StringValue);
 								string currentFile = currentModel.FileSourceName;
 								ServiceLocator.LoggingService.WriteLine($"Duplicate {modelName} found with id {currentModel.Id.StringValue}, original from {firstFile}, new from {currentFile}", LoggingService.LogSeverity.Error);
 							} else {
-								models.Add(currentModel.Id.StringValue, currentModel);
+								WeakReference reference = cache.AddModel(currentModel.Id.StringValue, currentModel);
 
 								if(OnModelLoaded!= null) {
-									OnModelLoaded(currentModel);
+									OnModelLoaded(currentModel, reference);
 								}
 							}
 
@@ -207,8 +206,6 @@ namespace CK3MK.Utilities {
 
 				ServiceLocator.LoggingService.WriteLine($"=== Finished {modelName} {fileName} ===\n", LoggingService.LogSeverity.Debug);
 			});
-
-			return models;
 		}
 	}
 }

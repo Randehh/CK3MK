@@ -2,12 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:cv="using:CK3MK.Utilities.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CK3MK.Views.GameModels.Attributes.GameModelAttributeCharacterControl">
-  <ComboBox Items="{ Binding AttributeContextObject }" SelectedItem="{ Binding Attribute.Value }" HorizontalAlignment="Stretch" VerticalContentAlignment="Center">
+  <UserControl.Resources>
+    <cv:CharacterModelConverter x:Key="characterConverter"/>
+  </UserControl.Resources>
+
+  <ComboBox Items="{ Binding AttributeContextObject }" SelectedItem="{ Binding Attribute.Value, Converter={ StaticResource characterConverter } Mode=OneWay }" HorizontalAlignment="Stretch" VerticalContentAlignment="Center">
     <ComboBox.ItemTemplate>
       <DataTemplate>
-        <TextBlock Text="{ Binding Name.StringValue }" />
+        <TextBlock Text="{ Binding ListEntryName }" />
       </DataTemplate>
     </ComboBox.ItemTemplate>
   </ComboBox>

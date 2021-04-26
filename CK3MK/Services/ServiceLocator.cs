@@ -26,13 +26,24 @@ namespace CK3MK.Services {
 			}
 		}
 
-		private static GameModelService m_GameModelService = null;
-		public static GameModelService GameModelService {
+		private static ModelCacheService m_ModelCacheService = null;
+		public static ModelCacheService ModelCacheService {
 			get {
-				if (m_GameModelService == null) {
-					m_GameModelService = new GameModelService();
+				if (m_ModelCacheService == null) {
+					m_ModelCacheService = new ModelCacheService();
+					m_ModelCacheService.LoadAllData();
 				}
-				return m_GameModelService;
+				return m_ModelCacheService;
+			}
+		}
+
+		private static GameDumpService m_GameDumpService = null;
+		public static GameDumpService GameDumpService {
+			get {
+				if (m_GameDumpService == null) {
+					m_GameDumpService = new GameDumpService();
+				}
+				return m_GameDumpService;
 			}
 		}
 

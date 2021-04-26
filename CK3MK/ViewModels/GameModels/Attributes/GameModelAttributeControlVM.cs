@@ -1,11 +1,10 @@
 ﻿using Avalonia.Controls;
-using CK3MK.Models.Game.Common;
+using CK3MK.Models.Game;
 using CK3MK.Models.Game.History;
 using CK3MK.Services;
 using CK3MK.Views.GameModels.Attributes;
 using ReactiveUI;
 using System.Collections.ObjectModel;
-
 using static CK3MK.Models.Game.GameModelAttributes;
 
 namespace CK3MK.ViewModels.GameModels.Attributes {
@@ -49,10 +48,10 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 				controlToAdd = new GameModelAttributeBooleanControl();
 			} else if (attribute is GameModelAttributeCharacter) {
 				controlToAdd = new GameModelAttributeCharacterControl();
-				AttributeContextObject = ServiceLocator.GameModelService.GetCharacters();
+				AttributeContextObject = ServiceLocator.ModelCacheService.Characters.GetObservableCollection();
 			} else if (attribute is GameModelAttributeDynasty) {
 				controlToAdd = new GameModelAttributeDynastyControl();
-				AttributeContextObject = ServiceLocator.GameModelService.GetDynasties();
+				AttributeContextObject = ServiceLocator.ModelCacheService.Dynasties.GetObservableCollection();
 			} else {
 				ServiceLocator.LoggingService.WriteLine($"Cannot find attribute control for attribute {attribute.GetType().Name}", LoggingService.LogSeverity.Critical);
 				return;
@@ -63,6 +62,13 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 			}
 		}
 
+		private class CharacterConverter {
+			public CharacterConverter(IGameModelAttribute attribute) {
+
+			}
+			public IGameModelAttribute Attribute { get; set; }
+			public ObservableCollection<SimpleGameModel<Character>> Characters { get; set; } = ServiceLocator.ModelCacheService.Characters.GetObservableCollection();
+		}
 
 		private enum AttributeType {
 			Unknown,
