@@ -167,5 +167,20 @@ namespace CK3MK.Models.Game {
 				return null;
 			}
 		}
+
+		public class GameModelAttributeDynastyHouse : GameModelAttribute<DynastyHouse> {
+			public GameModelAttributeDynastyHouse(BaseGameModel model, string name) : base(model, name, true) { }
+
+			public override DynastyHouse ValueFromString(string s) {
+				return ServiceLocator.ModelCacheService.DynastyHouses.GetFullModel(s);
+			}
+
+			public override string ValueToString(DynastyHouse o) {
+				if (o != null) {
+					return o.Name.StringValue;
+				}
+				return null;
+			}
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using CK3MK.Models.Game.Common;
+﻿using CK3MK.Models.Game;
+using CK3MK.Models.Game.Common;
 using CK3MK.Models.Game.History;
 using CK3MK.Utilities;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace CK3MK.Services {
 			m_IsLoaded = true;
 			LoadCharacters();
 			LoadDynasties();
+			LoadDynastyHouses();
 		}
 
 		private bool m_IsLoaded = false;
@@ -18,13 +20,14 @@ namespace CK3MK.Services {
 		public Dictionary<string, GameModelCache<Character>> CharactersByCountry { get; set; } = new Dictionary<string, GameModelCache<Character>>();
 		public GameModelCache<Character> Characters { get; set; } = new GameModelCache<Character>();
 		public GameModelCache<Dynasty> Dynasties { get; set; } = new GameModelCache<Dynasty>();
+		public GameModelCache<DynastyHouse> DynastyHouses { get; set; } = new GameModelCache<DynastyHouse>();
 
 		public ObservableCollection<string> Countries => new ObservableCollection<string>(CharactersByCountry.Keys);
 
 		#region Data load		
 		public void LoadCharacters() {
 			string charactersFolder = GameModelPathUtil.Characters;
-			AssetsUtil.LoadModelsFromFolder<Character>(Characters, charactersFolder, (character, weakReference) => {
+			AssetsUtil.LoadModelsFromFolder(Characters, charactersFolder, (character, weakReference) => {
 				if (!CharactersByCountry.ContainsKey(character.FileSourceName)) {
 					CharactersByCountry.Add(character.FileSourceName, new GameModelCache<Character>());
 				}
@@ -34,7 +37,12 @@ namespace CK3MK.Services {
 
 		public void LoadDynasties() {
 			string dynastiesFolder = GameModelPathUtil.Dynasties;
-			AssetsUtil.LoadModelsFromFolder<Dynasty>(Dynasties, dynastiesFolder);
+			AssetsUtil.LoadModelsFromFolder(Dynasties, dynastiesFolder);
+		}
+
+		public void LoadDynastyHouses() {
+			string dynastyHousesFolder = GameModelPathUtil.DynastyHouses;
+			AssetsUtil.LoadModelsFromFolder(DynastyHouses, dynastyHousesFolder);
 		}
 		#endregion
 	}

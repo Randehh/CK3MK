@@ -11,6 +11,7 @@ namespace CK3MK.Utilities {
 
 		//Common folders
 		public static string Dynasties => Path.Combine(Common, "dynasties");
+		public static string DynastyHouses => Path.Combine(Common, "dynasty_houses");
 
 		//History folders
 		public static string Characters => Path.Combine(History, "characters");

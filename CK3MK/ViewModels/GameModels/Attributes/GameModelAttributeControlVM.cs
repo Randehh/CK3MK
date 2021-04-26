@@ -52,6 +52,9 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 			} else if (attribute is GameModelAttributeDynasty) {
 				controlToAdd = new GameModelAttributeDynastyControl();
 				AttributeContextObject = ServiceLocator.ModelCacheService.Dynasties.GetObservableCollection();
+			} else if (attribute is GameModelAttributeDynastyHouse) {
+				controlToAdd = new GameModelAttributeDynastyHouseControl();
+				AttributeContextObject = ServiceLocator.ModelCacheService.DynastyHouses.GetObservableCollection();
 			} else {
 				ServiceLocator.LoggingService.WriteLine($"Cannot find attribute control for attribute {attribute.GetType().Name}", LoggingService.LogSeverity.Critical);
 				return;
@@ -76,7 +79,8 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 			Integer,
 			Bool,
 			Character,
-			Dynasty
+			Dynasty,
+			DynastyHouse
 		}
 	}
 }

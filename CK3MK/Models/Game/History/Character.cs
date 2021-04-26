@@ -17,7 +17,7 @@ namespace CK3MK.Models.Game.History {
 		public GameModelAttributeString Religion { get; set; }
 		public GameModelAttributeString Culture { get; set; }
 		public GameModelAttributeDynasty Dynasty { get; set; }
-		public GameModelAttributeString DynastyHouse { get; set; }
+		public GameModelAttributeDynastyHouse DynastyHouse { get; set; }
 		public GameModelAttributeString GiveNickname { get; set; }
 		public GameModelAttributeString Sexuality { get; set; }
 		public GameModelAttributeInt Health { get; set; }
@@ -38,7 +38,7 @@ namespace CK3MK.Models.Game.History {
 			Religion =				RegisterAttribute(new GameModelAttributeString(this, "Religion", true));
 			Culture =				RegisterAttribute(new GameModelAttributeString(this, "Culture", true));
 			Dynasty =				RegisterAttribute(new GameModelAttributeDynasty(this, "Dynasty"));
-			DynastyHouse =			RegisterAttribute(new GameModelAttributeString(this, "Dynasty house"));
+			DynastyHouse =			RegisterAttribute(new GameModelAttributeDynastyHouse(this, "Dynasty house"));
 			GiveNickname =			RegisterAttribute(new GameModelAttributeString(this, "Give nickname"));
 			Sexuality =				RegisterAttribute(new GameModelAttributeString(this, "Sexuality"));
 			Health =				RegisterAttribute(new GameModelAttributeInt(this, "Health"));

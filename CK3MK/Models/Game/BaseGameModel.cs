@@ -73,7 +73,7 @@ namespace CK3MK.Models.Game {
 			OnModelChanged();
 		}
 
-		public string GetListEntryName() {
+		public virtual string GetListEntryName() {
 			return Name.Value;
 		}
 	}

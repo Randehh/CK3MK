@@ -19,6 +19,9 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.0" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\GameModels\Attributes\GameModelAttributeDynastyHouseControl.axaml.cs">
+      <DependentUpon>GameModelAttributeDynastyHouseControl.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\GameModels\Attributes\GameModelAttributeDynastyControl.axaml.cs">
       <DependentUpon>GameModelAttributeDynastyControl.axaml</DependentUpon>
     </Compile>
