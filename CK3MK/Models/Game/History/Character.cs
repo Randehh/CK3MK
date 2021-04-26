@@ -25,7 +25,7 @@ namespace CK3MK.Models.Game.History {
 
 		public Character(string fileName) : base(fileName) {
 			Dna =					RegisterAttribute(new GameModelAttributeString(this, "DNA"));
-			Female =				RegisterAttribute(new GameModelAttributeBool(this, "Is female"));
+			Female =				RegisterAttribute(new GameModelAttributeBool(this, "Is female", "Yes", "No"));
 			Martial =				RegisterAttribute(new GameModelAttributeInt(this, "Martial skill"));
 			Prowess =				RegisterAttribute(new GameModelAttributeInt(this, "Prowess skill"));
 			Diplomacy =				RegisterAttribute(new GameModelAttributeInt(this, "Diplomacy skill"));
@@ -34,7 +34,7 @@ namespace CK3MK.Models.Game.History {
 			Learning =				RegisterAttribute(new GameModelAttributeInt(this, "Learning skill"));
 			Father =				RegisterAttribute(new GameModelAttributeCharacter(this, "Father", fileName));
 			Mother =				RegisterAttribute(new GameModelAttributeCharacter(this, "Mother", fileName));
-			DisallowRandomTraits =	RegisterAttribute(new GameModelAttributeBool(this, "Disallow random traits"));
+			DisallowRandomTraits =	RegisterAttribute(new GameModelAttributeBool(this, "Disallow random traits", "Yes", "No"));
 			Religion =				RegisterAttribute(new GameModelAttributeString(this, "Religion", true));
 			Culture =				RegisterAttribute(new GameModelAttributeString(this, "Culture", true));
 			Dynasty =				RegisterAttribute(new GameModelAttributeDynasty(this, "Dynasty"));

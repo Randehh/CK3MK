@@ -59,15 +59,7 @@ namespace CK3MK.ViewModels.GameModels {
 		public Character SelectedCharacter {
 			get => m_SelectedCharacter;
 			set {
-				if (m_SelectedCharacter != null) {
-					m_SelectedCharacter.OnModelChanged -= UpdateCharacterData;
-				}
-
 				this.RaiseAndSetIfChanged(ref m_SelectedCharacter, value);
-
-				if(m_SelectedCharacter != null) {
-					m_SelectedCharacter.OnModelChanged += UpdateCharacterData;
-				}
 			}
 		}
 
@@ -80,10 +72,5 @@ namespace CK3MK.ViewModels.GameModels {
 				m_Attributes.Add(c as GameModelAttributeControl);
 			}
 		}
-
-		private void UpdateCharacterData() {
-			this.RaisePropertyChanged(nameof(SelectedCharacter));
-		}
-
 	}
 }

@@ -29,6 +29,7 @@ namespace CK3MK.Models.Game {
 					if (!IsAssigned) {
 						IsAssigned = m_Value != null;
 					}
+					OnValueChanged();
 				}
 			}
 			public Action OnValueChanged { get; set; } = delegate { };
@@ -105,7 +106,17 @@ namespace CK3MK.Models.Game {
 		}
 
 		public class GameModelAttributeBool : GameModelAttribute<bool> {
-			public GameModelAttributeBool(BaseGameModel model, string name) : base(model, name) { }
+			public string TrueText { get; set; } = "";
+			public string FalseText { get; set; } = "";
+			public string CurrentText => Value ? TrueText : FalseText;
+
+			public GameModelAttributeBool(BaseGameModel model, string name, string trueText, string falseText) : base(model, name) {
+				TrueText = trueText;
+				FalseText = falseText;
+				OnValueChanged += () => {
+					this.RaisePropertyChanged(nameof(CurrentText));
+				};
+			}
 
 			public override bool ValueFromString(string s) {
 				if (s.Equals("yes")) {

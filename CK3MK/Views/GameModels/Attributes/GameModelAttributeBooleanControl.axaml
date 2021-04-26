@@ -4,5 +4,5 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CK3MK.Views.GameModels.Attributes.GameModelAttributeBooleanControl">
-  <ToggleButton IsChecked="{ Binding Attribute.Value }" Content="Is true" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+  <ToggleButton IsChecked="{ Binding Attribute.Value }" Content="{ Binding Attribute.CurrentText }" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
 </UserControl>
