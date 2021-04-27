@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Avalonia.ReactiveUI;
 using CK3MK.ViewModels;
 
 namespace CK3MK.Views {
@@ -17,6 +16,10 @@ namespace CK3MK.Views {
 
 		private void InitializeComponent() {
 			AvaloniaXamlLoader.Load(this);
+		}
+
+		public void RegisterTaskBar(TaskBarVM taskBar) {
+			(DataContext as MainWindowViewModel).RegisterTaskBar(taskBar);
 		}
 	}
 }
