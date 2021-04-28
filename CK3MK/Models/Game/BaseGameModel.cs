@@ -1,11 +1,15 @@
-﻿using System;
+﻿using CK3MK.Services;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using static CK3MK.Models.Game.GameModelAttributes;
 
 namespace CK3MK.Models.Game {
-	public class BaseGameModel {
+	public abstract class BaseGameModel {
+
+		public static string ScopeType { get; } = "";
+		public static GameType Scope => ServiceLocator.GameDumpService.GetGameType(ScopeType);
 
 		public string CacheId => $"{FileSourceName}_{Id.Value}";
 

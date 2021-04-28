@@ -1,6 +1,8 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using CK3MK.ViewModels.Generic;
 using CK3MK.ViewModels.RootPages;
+using System;
 
 namespace CK3MK.Views.RootPages {
 	public class HomePage : UserControl {

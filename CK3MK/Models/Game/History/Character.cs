@@ -2,6 +2,8 @@
 
 namespace CK3MK.Models.Game.History {
 	public class Character : BaseGameModel {
+		public static new string ScopeType => "Character";
+
 		public GameModelAttributeString Dna { get; set; }
 		public GameModelAttributeBool Female { get; set; }
 		public GameModelAttributeInt Martial { get; set; }

@@ -1,8 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using CK3MK.Utilities;
-using CK3MK.ViewModels;
 using CK3MK.Views;
 
 namespace CK3MK {

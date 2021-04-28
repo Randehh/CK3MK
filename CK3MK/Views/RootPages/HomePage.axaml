@@ -2,7 +2,44 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="using:CK3MK.Views.Generic"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CK3MK.Views.RootPages.HomePage">
-  .This will be the home page
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="auto"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="2*"/>
+      </Grid.ColumnDefinitions>
+
+      <Grid Grid.Column="0" ColumnDefinitions="*" RowDefinitions="*,*,*" HorizontalAlignment="Stretch">
+        <Button Content="New project" Grid.Row="0"/>
+        <Button Content="New project2" Grid.Row="1"/>
+      </Grid>
+    </Grid>
+
+    <Grid Background="LightGray" Grid.Row="1">
+      <Grid Margin="5">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="auto"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,5">
+          <TextBlock Text="Need help?" FontWeight="ExtraBold"/>
+        </Grid>
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Stretch">
+          <v:TextBlockWithLink DataContext="{Binding LinkVMModdingMain}" />
+          <v:TextBlockWithLink DataContext="{Binding LinkVMDiscordServer}"/>
+          <v:TextBlockWithLink DataContext="{Binding LinkVMDiscordServerCommunity}"/>
+        </StackPanel>
+      </Grid>
+    </Grid>
+  </Grid>
 </UserControl>

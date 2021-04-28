@@ -1,25 +1,51 @@
 ﻿using CK3MK.Utilities;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 
 namespace CK3MK.Services {
 	public class GameDumpService {
-		private Dictionary<string, GameTypes> m_Types = new Dictionary<string, GameTypes>();
+		private Dictionary<string, GameType> m_Types = new Dictionary<string, GameType>();
 		private Dictionary<string, string> m_GlobalFunctions = new Dictionary<string, string>();
 		private Dictionary<string, string> m_GlobalPromotes = new Dictionary<string, string>();
+
+		public ObservableCollection<string> GameTypesKeys { get; set; } = new ObservableCollection<string>();
+		public ObservableCollection<string> GlobalFunctionsKeys { get; set; } = new ObservableCollection<string>();
+		public ObservableCollection<string> GlobalPromotesKeys { get; set; } = new ObservableCollection<string>();
+
+		public GameType GetGameType(string t) {
+			if (m_Types.ContainsKey(t)) {
+				return m_Types[t];
+			}
+			return null;
+		}
+
+		public string GetFunctionReturnType(string functionName) {
+			if (m_GlobalFunctions.ContainsKey(functionName)) {
+				return m_GlobalFunctions[functionName];
+			}
+			return null;
+		}
+
+		public string GetGlobalPromoteType(string globalPromoteName) {
+			if (m_GlobalPromotes.ContainsKey(globalPromoteName)) {
+				return m_GlobalPromotes[globalPromoteName];
+			}
+			return null;
+		}
 
 		public bool LoadModelDump(string path) {
 			if (!File.Exists(path)) return false;
 
 			DumpCategories currentCategory = DumpCategories.Unknown;
-			GameTypes currentType = null;
+			GameType currentType = null;
 
 			bool success = AssetsUtil.ReadCK3ConfigFile(path,
 				(key, _) => {
 					if (currentCategory == DumpCategories.Unknown) {
 						currentCategory = GetCategoryFromName(key);
 					} else if (currentCategory == DumpCategories.Types) {
-						currentType = new GameTypes() {
+						currentType = new GameType() {
 							Name = key,
 						};
 					}
@@ -44,18 +70,22 @@ namespace CK3MK.Services {
 					}
 				});
 
+			GameTypesKeys = new ObservableCollection<string>(m_Types.Keys);
+			GlobalFunctionsKeys = new ObservableCollection<string>(m_GlobalFunctions.Keys);
+			GlobalPromotesKeys = new ObservableCollection<string>(m_GlobalPromotes.Keys);
+
 			return success;
 		}
 
 		private DumpCategories GetCategoryFromName(string name) {
-			if (name == "Global Promotes") return DumpCategories.GlobalPromotes;
-			if (name == "Global Functions") return DumpCategories.GlobalFunctions;
+			if (name == "GlobalPromotes") return DumpCategories.GlobalPromotes;
+			if (name == "GlobalFunctions") return DumpCategories.GlobalFunctions;
 			if (name == "Types") return DumpCategories.Types;
 			return DumpCategories.Unknown;
 		}
 	}
 
-	public class GameTypes {
+	public class GameType {
 		public string Name { get; set; }
 		private Dictionary<string, string> m_Parameters = new Dictionary<string, string>();
 

@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.LogicalTree;
 using CK3MK.Models;
+using CK3MK.Models.Game.History;
 using CK3MK.Services;
 using CK3MK.Utilities;
 using CK3MK.Views;
