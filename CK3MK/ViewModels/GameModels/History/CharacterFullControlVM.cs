@@ -2,16 +2,16 @@
 using CK3MK.Models.Game;
 using CK3MK.Models.Game.History;
 using CK3MK.Services;
-using CK3MK.Views.GameModels;
 using CK3MK.Views.GameModels.Attributes;
+using CK3MK.Views.GameModels.History;
 using ReactiveUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace CK3MK.ViewModels.GameModels {
-	public class CharacterDialogVM : ViewModelBase {
+namespace CK3MK.ViewModels.History.GameModels {
+	public class CharacterFullControlVM : ViewModelBase {
 
-		private CharacterDialog m_Window;
+		private CharacterFullControl m_Window;
 
 		private List<GameModelAttributeControl> m_Attributes = new List<GameModelAttributeControl>();
 
@@ -63,7 +63,7 @@ namespace CK3MK.ViewModels.GameModels {
 			}
 		}
 
-		public CharacterDialogVM(CharacterDialog window) {
+		public CharacterFullControlVM(CharacterFullControl window) {
 			m_Window = window;
 
 			Countries = new ObservableCollection<string>(ServiceLocator.ModelCacheService.Countries);

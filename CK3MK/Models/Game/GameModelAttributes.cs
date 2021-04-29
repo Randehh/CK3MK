@@ -43,7 +43,7 @@ namespace CK3MK.Models.Game {
 
 			private bool m_IsAssigned = false;
 			public bool IsAssigned {
-				get => m_IsAssigned;
+				get => IsPostLinkAttribute ? !string.IsNullOrWhiteSpace(RawStringValue) : m_IsAssigned;
 				set => this.RaiseAndSetIfChanged(ref m_IsAssigned, value);
 			}
 

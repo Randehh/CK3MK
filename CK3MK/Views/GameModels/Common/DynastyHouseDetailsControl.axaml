@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:v="using:CK3MK.Views.GameModels.Attributes"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="CK3MK.Views.GameModels.Common.DynastyDetailsControl">
+             x:Class="CK3MK.Views.GameModels.Common.DynastyHouseDetailsControl">
 
   <Grid>
     <Grid.RowDefinitions>
@@ -13,13 +13,13 @@
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
 
-    <TextBlock Grid.Row="0" Text="Dynasty details" FontWeight="Bold" FontSize="20"/>
+    <TextBlock Grid.Row="0" Text="Dynasty house details" FontWeight="Bold" FontSize="20"/>
 
     <ScrollViewer Grid.Row="2">
       <StackPanel x:Name="AttributeStackPanel">
         <v:GameModelAttributeControl DataContext="{ Binding Name }"/>
         <v:GameModelAttributeControl DataContext="{ Binding Prefix }"/>
-        <v:GameModelAttributeControl DataContext="{ Binding Culture }"/>
+        <v:GameModelAttributeControl DataContext="{ Binding Dynasty }"/>
       </StackPanel>
     </ScrollViewer>
   </Grid>

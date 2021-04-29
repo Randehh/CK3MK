@@ -1,6 +1,7 @@
 ﻿using CK3MK.ViewModels.Generic;
 using CK3MK.Views.GameModels;
 using CK3MK.Views.GameModels.Common;
+using CK3MK.Views.GameModels.History;
 using CK3MK.Views.RootPages;
 using ReactiveUI;
 using System;
@@ -50,11 +51,15 @@ namespace CK3MK.ViewModels.RootPages {
 		}
 
 		private void PushCharacterControl() {
-			RootFlowPageVM.MainFlowPage.PushControl("Characters", new CharacterDialog());
+			RootFlowPageVM.MainFlowPage.PushControl("Characters", new CharacterFullControl());
 		}
 
 		private void PushDynastyControl() {
-			RootFlowPageVM.MainFlowPage.PushControl("Dynasties", new DynastyDialog());
+			RootFlowPageVM.MainFlowPage.PushControl("Dynasties", new DynastyFullControl());
+		}
+
+		private void PushDynastyHouseControl() {
+			RootFlowPageVM.MainFlowPage.PushControl("Dynasty houses", new DynastyHouseFullControl());
 		}
 	}
 }

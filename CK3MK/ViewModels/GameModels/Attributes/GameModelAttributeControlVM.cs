@@ -6,6 +6,7 @@ using CK3MK.Services;
 using CK3MK.ViewModels.RootPages;
 using CK3MK.Views.GameModels.Attributes;
 using CK3MK.Views.GameModels.Common;
+using CK3MK.Views.GameModels.History;
 using ReactiveUI;
 using System;
 using System.Collections.ObjectModel;
@@ -60,6 +61,11 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 			} else if (attribute is GameModelAttributeCharacter) {
 				controlToAdd = new GameModelAttributeCharacterControl();
 				AttributeContextObject = ServiceLocator.ModelCacheService.Characters.GetObservableCollection();
+				PushDetailsCommand = () => {
+					Character character = (Attribute as GameModelAttributeCharacter).Value;
+					string characterName = character.Name.StringValue;
+					RootFlowPageVM.MainFlowPage.PushControl($"Character - {characterName}", new CharacterDetailsControl() { DataContext = character });
+				};
 			} else if (attribute is GameModelAttributeDynasty) {
 				controlToAdd = new GameModelAttributeDynastyControl();
 				AttributeContextObject = ServiceLocator.ModelCacheService.Dynasties.GetObservableCollection();

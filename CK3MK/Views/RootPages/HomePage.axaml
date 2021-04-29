@@ -16,7 +16,7 @@
         <StackPanel HorizontalAlignment="Stretch" Spacing="5">
           <TextBlock Text="World" FontWeight="UltraBold" FontSize="20"/>
           <Button Content="Dynasties" Command="{Binding PushDynastyControl}" HorizontalAlignment="Stretch"/>
-          <Button Content="Dynasty houses" HorizontalAlignment="Stretch"/>
+          <Button Content="Dynasty houses" Command="{Binding PushDynastyHouseControl}" HorizontalAlignment="Stretch"/>
           <Button Content="Events" HorizontalAlignment="Stretch"/>
           <Button Content="Decisions" HorizontalAlignment="Stretch"/>
           <Button Content="Religions" HorizontalAlignment="Stretch"/>

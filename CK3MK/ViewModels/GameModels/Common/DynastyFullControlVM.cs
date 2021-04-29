@@ -6,9 +6,9 @@ using ReactiveUI;
 using System.Collections.ObjectModel;
 
 namespace CK3MK.ViewModels.GameModels.Common {
-	public class DynastyDialogVM : ViewModelBase {
+	public class DynastyFullControlVM : ViewModelBase {
 
-		private DynastyDialog m_Window;
+		private DynastyFullControl m_Window;
 
 		private ObservableCollection<SimpleGameModel<Dynasty>> m_Dynasties = new ObservableCollection<SimpleGameModel<Dynasty>>();
 		public ObservableCollection<SimpleGameModel<Dynasty>> Dynasties {
@@ -34,7 +34,7 @@ namespace CK3MK.ViewModels.GameModels.Common {
 			set => this.RaiseAndSetIfChanged(ref m_SelectedDynasty, value);
 		}
 
-		public DynastyDialogVM(DynastyDialog window) {
+		public DynastyFullControlVM(DynastyFullControl window) {
 			m_Window = window;
 
 			Dynasties = ServiceLocator.ModelCacheService.Dynasties.GetObservableCollection();
