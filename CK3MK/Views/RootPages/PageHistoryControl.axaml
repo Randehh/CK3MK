@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="CK3MK.Views.RootPages.PageHistoryControl">
+  <Grid Background="LightGray">
+    <StackPanel Orientation="Horizontal" Margin="5" x:Name="HistoryStackPanel">
+      <Button Content="Home"/>
+      <TextBlock Text="->" VerticalAlignment="Center"/>
+      <Button Content="Second page"/>
+      <TextBlock Text="->" VerticalAlignment="Center"/>
+      <Button Content="Third page"/>
+    </StackPanel>
+  </Grid>
+</UserControl>

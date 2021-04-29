@@ -37,6 +37,9 @@
     <Compile Update="Views\GameModels\Attributes\GameModelAttributeBooleanControl.axaml.cs">
       <DependentUpon>GameModelAttributeBooleanControl.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\GameModels\Common\DynastyDetailsControl.axaml.cs">
+      <DependentUpon>DynastyDetailsControl.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\GameModels\Common\DynastySelectorControl.axaml.cs">
       <DependentUpon>DynastySelectorControl.axaml</DependentUpon>
     </Compile>

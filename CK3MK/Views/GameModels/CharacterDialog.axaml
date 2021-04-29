@@ -1,14 +1,10 @@
-<Window xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:va="using:CK3MK.Views.GameModels"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
-        CanResize="False"
-        SizeToContent="Width"
-        WindowStartupLocation="CenterOwner"
-        x:Class="CK3MK.Views.GameModels.CharacterDialog"
-        Title="Character editor">
+        x:Class="CK3MK.Views.GameModels.CharacterDialog">
   <Grid Margin="10">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="300"/>
@@ -22,4 +18,4 @@
 
     <va:CharacterDetailsControl Grid.Column="2" Margin="5,0,0,0" x:Name="DetailsControl"/>
   </Grid>
-</Window>
+</UserControl>

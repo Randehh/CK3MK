@@ -31,13 +31,6 @@
         <MenuItem Header="Edit">
           <MenuItem Header="Preferences" Command="{ Binding OnCommand_Preferences }"/>
         </MenuItem>
-        <MenuItem Header="Editors">
-          <MenuItem Header="Dynasty editor" Command="{ Binding OnCommand_DynastyEditor }"/>
-          <Separator/>
-          <MenuItem Header="History">
-            <MenuItem Header="Character editor" Command="{ Binding OnCommand_CharacterInspector }"/>
-          </MenuItem>
-        </MenuItem>
       </Menu>
     </DockPanel>
   </Grid>

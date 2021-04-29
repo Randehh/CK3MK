@@ -7,15 +7,15 @@
              x:Class="CK3MK.Views.GameModels.Attributes.GameModelAttributeControl">
   <Grid Margin="2">
     <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="30"/>
+      <ColumnDefinition Width="5"/>
       <ColumnDefinition Width="200"/>
       <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="*"/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition Width="100"/>
+      <ColumnDefinition Width="*"/>      
     </Grid.ColumnDefinitions>
-    
-    <TextBlock Text="{ Binding Attribute.Name }" Grid.Column="0" VerticalAlignment="Center"/>
-    <Grid x:Name="AttributeDisplayDock" Grid.Column="2"/>
-    <ToggleButton Content="Assigned" IsChecked="{ Binding Attribute.IsAssigned }" Grid.Column="4" HorizontalAlignment="Stretch"/>
+
+    <ToggleButton Content="✓" IsChecked="{ Binding Attribute.IsAssigned }" Grid.Column="0" HorizontalAlignment="Stretch"/>
+    <TextBlock Text="{ Binding Attribute.Name }" Grid.Column="2" VerticalAlignment="Center"/>
+    <Grid x:Name="AttributeDisplayDock" Grid.Column="4"/>
   </Grid>
 </UserControl>

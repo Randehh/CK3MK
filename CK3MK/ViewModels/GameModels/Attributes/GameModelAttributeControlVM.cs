@@ -1,10 +1,15 @@
 ﻿using Avalonia.Controls;
 using CK3MK.Models.Game;
+using CK3MK.Models.Game.Common;
 using CK3MK.Models.Game.History;
 using CK3MK.Services;
+using CK3MK.ViewModels.RootPages;
 using CK3MK.Views.GameModels.Attributes;
+using CK3MK.Views.GameModels.Common;
 using ReactiveUI;
+using System;
 using System.Collections.ObjectModel;
+using System.Reactive;
 using static CK3MK.Models.Game.GameModelAttributes;
 
 namespace CK3MK.ViewModels.GameModels.Attributes {
@@ -24,6 +29,12 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 		public object AttributeContextObject {
 			get => m_AttributeContextObject;
 			set => m_AttributeContextObject = value;
+		}
+
+		private Action m_PushDetailsCommand;
+		public Action PushDetailsCommand {
+			get => m_PushDetailsCommand;
+			set => this.RaiseAndSetIfChanged(ref m_PushDetailsCommand, value);
 		}
 
 		public GameModelAttributeControlVM(GameModelAttributeControl window, IGameModelAttribute attribute) {
@@ -52,6 +63,11 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 			} else if (attribute is GameModelAttributeDynasty) {
 				controlToAdd = new GameModelAttributeDynastyControl();
 				AttributeContextObject = ServiceLocator.ModelCacheService.Dynasties.GetObservableCollection();
+				PushDetailsCommand = () => {
+					Dynasty dynasty = (Attribute as GameModelAttributeDynasty).Value;
+					string dynastyName = dynasty.Name.StringValue;
+					RootFlowPageVM.MainFlowPage.PushControl($"Dynasty - {dynastyName}", new DynastyDetailsControl() { DataContext = dynasty });
+				};
 			} else if (attribute is GameModelAttributeDynastyHouse) {
 				controlToAdd = new GameModelAttributeDynastyHouseControl();
 				AttributeContextObject = ServiceLocator.ModelCacheService.DynastyHouses.GetObservableCollection();

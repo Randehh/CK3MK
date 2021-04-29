@@ -8,12 +8,21 @@
   <UserControl.Resources>
     <cv:DynastyModelConverter x:Key="dynastyConverter"/>
   </UserControl.Resources>
-  
-  <ComboBox Items="{ Binding AttributeContextObject }" SelectedItem="{ Binding Attribute.Value, Converter={ StaticResource dynastyConverter } Mode=OneWay }" HorizontalAlignment="Stretch" VerticalContentAlignment="Center">
-    <ComboBox.ItemTemplate>
-      <DataTemplate>
-        <TextBlock Text="{ Binding ListEntryName }" />
-      </DataTemplate>
-    </ComboBox.ItemTemplate>
-  </ComboBox>
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="auto"/>
+    </Grid.ColumnDefinitions>
+    <ComboBox Items="{ Binding AttributeContextObject }" SelectedItem="{ Binding Attribute.Value, Converter={ StaticResource dynastyConverter } Mode=OneWay }"
+              HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="0">
+      <ComboBox.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{ Binding ListEntryName }" />
+        </DataTemplate>
+      </ComboBox.ItemTemplate>
+    </ComboBox>
+    <Button Content="Details" Command="{Binding PushDetailsCommand}" Grid.Column="1"/>
+  </Grid>
+
 </UserControl>

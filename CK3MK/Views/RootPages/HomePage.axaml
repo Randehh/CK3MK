@@ -11,16 +11,48 @@
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
 
-    <Grid Grid.Row="0">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="2*"/>
-      </Grid.ColumnDefinitions>
+    <Grid Grid.Row="0" ColumnDefinitions="*,20,*,20,*" Margin="5">
+      <ScrollViewer Grid.Column="0">
+        <StackPanel HorizontalAlignment="Stretch" Spacing="5">
+          <TextBlock Text="World" FontWeight="UltraBold" FontSize="20"/>
+          <Button Content="Dynasties" Command="{Binding PushDynastyControl}" HorizontalAlignment="Stretch"/>
+          <Button Content="Dynasty houses" HorizontalAlignment="Stretch"/>
+          <Button Content="Events" HorizontalAlignment="Stretch"/>
+          <Button Content="Decisions" HorizontalAlignment="Stretch"/>
+          <Button Content="Religions" HorizontalAlignment="Stretch"/>
+          <Button Content="Traits" HorizontalAlignment="Stretch"/>
+          <Button Content="Council" HorizontalAlignment="Stretch"/>
+          <Button Content="Map" HorizontalAlignment="Stretch"/>
+          <Button Content="Terrain" HorizontalAlignment="Stretch"/>
+          <Button Content="Commands" HorizontalAlignment="Stretch"/>
+          <Button Content="Activities" HorizontalAlignment="Stretch"/>
+        </StackPanel>
+      </ScrollViewer>
 
-      <Grid Grid.Column="0" ColumnDefinitions="*" RowDefinitions="*,*,*" HorizontalAlignment="Stretch">
-        <Button Content="New project" Grid.Row="0"/>
-        <Button Content="New project2" Grid.Row="1"/>
-      </Grid>
+      <ScrollViewer Grid.Column="2">
+        <StackPanel HorizontalAlignment="Stretch" Spacing="5">
+          <TextBlock Text="Graphics" FontWeight="UltraBold" FontSize="20"/>
+          <Button Content="3D Models" HorizontalAlignment="Stretch"/>
+          <Button Content="Interface" HorizontalAlignment="Stretch"/>
+          <Button Content="Coat of Arms" HorizontalAlignment="Stretch"/>
+          <Button Content="Fonts" HorizontalAlignment="Stretch"/>
+          <Button Content="Particles" HorizontalAlignment="Stretch"/>
+          <Button Content="Shaders" HorizontalAlignment="Stretch"/>
+          <Button Content="Unit models" HorizontalAlignment="Stretch"/>
+        </StackPanel>
+      </ScrollViewer>
+      
+      <ScrollViewer Grid.Column="4">
+        <StackPanel HorizontalAlignment="Stretch" Spacing="5">
+          <TextBlock Text="History" FontWeight="UltraBold" FontSize="20"/>
+          <Button Content="Characters" Command="{Binding PushCharacterControl}" HorizontalAlignment="Stretch"/>
+          <Button Content="Titles" HorizontalAlignment="Stretch"/>
+          <Button Content="Culture" HorizontalAlignment="Stretch"/>
+          <Button Content="Wars" HorizontalAlignment="Stretch"/>
+          <Button Content="Provinces" HorizontalAlignment="Stretch"/>
+          <Button Content="Province Mapping" HorizontalAlignment="Stretch"/>
+        </StackPanel>
+      </ScrollViewer>
     </Grid>
 
     <Grid Background="LightGray" Grid.Row="1">

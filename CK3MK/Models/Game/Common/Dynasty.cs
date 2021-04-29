@@ -13,7 +13,7 @@ namespace CK3MK.Models.Game.Common {
 
 		public override string GetListEntryName() {
 			if (string.IsNullOrWhiteSpace(Name.Value)) return "";
-			return Name.Value.Substring("dynn_".Length, Name.Value.Length - "dynn_".Length);
+			return Name.Value;
 		}
 	}
 }

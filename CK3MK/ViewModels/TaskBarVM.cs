@@ -27,8 +27,6 @@ namespace CK3MK.ViewModels {
 
 		//Windows
 		public ReactiveCommand<Unit, Unit> OnCommand_Preferences { get; }
-		public ReactiveCommand<Unit, Unit> OnCommand_DynastyEditor { get; }
-		public ReactiveCommand<Unit, Unit> OnCommand_CharacterInspector { get; }
 
 		public ObservableCollection<DynamicMenuItem> RecentProjectItems { get; set; } = new ObservableCollection<DynamicMenuItem>();
 
@@ -40,8 +38,6 @@ namespace CK3MK.ViewModels {
 			OnCommand_OpenRecent = ReactiveCommand.Create<string>(OpenProjectByPath);
 			OnCommand_OpenLog = ReactiveCommand.Create(OpenLog);
 			OnCommand_Preferences = ReactiveCommand.Create(OpenPreferences);
-			OnCommand_DynastyEditor = ReactiveCommand.Create(OpenDynastyEditor);
-			OnCommand_CharacterInspector = ReactiveCommand.Create(OpenCharacterInspector);
 
 			m_Control.FindControl<MenuItem>("RecentProjectsMenuItem").ResourcesChanged += (sender, args) => { RefreshRecentProjects(); };
 			RefreshRecentProjects();
@@ -118,16 +114,6 @@ namespace CK3MK.ViewModels {
 
 		private void OpenProject(object e, ModProject project) {
 			string d = "Project loaded = " + project.Name;
-		}
-
-		private async void OpenDynastyEditor() {
-			DynastyDialog newDialog = new DynastyDialog();
-			await newDialog.ShowDialog(ParentWindow);
-		}
-
-		private async void OpenCharacterInspector() {
-			CharacterDialog newDialog = new CharacterDialog();
-			await newDialog.ShowDialog(ParentWindow);
 		}
 	}
 }

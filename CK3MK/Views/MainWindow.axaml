@@ -15,8 +15,8 @@
     </Grid.RowDefinitions>
     
     <v:TaskBar Grid.Row="0"/>
-    <Grid Grid.Row="1" x:Name="DockGrid" Margin="10">
-      <rp:HomePage/>
+    <Grid Grid.Row="1" x:Name="DockGrid">
+      <rp:RootFlowPage/>
     </Grid>
   </Grid>
 
