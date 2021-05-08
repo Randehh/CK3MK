@@ -1,15 +1,9 @@
-﻿using CK3MK.ViewModels.Generic;
-using CK3MK.Views.GameModels;
-using CK3MK.Views.GameModels.Common;
-using CK3MK.Views.GameModels.History;
+﻿using CK3MK.Services;
+using CK3MK.Utilities;
+using CK3MK.ViewModels.Generic;
 using CK3MK.Views.RootPages;
 using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace CK3MK.ViewModels.RootPages {
 	public class HomePageVM : ViewModelBase {
@@ -51,15 +45,18 @@ namespace CK3MK.ViewModels.RootPages {
 		}
 
 		private void PushCharacterControl() {
-			RootFlowPageVM.MainFlowPage.PushControl("Characters", new CharacterFullControl());
+			RootFlowPageVM.MainFlowPage.PushControl("Characters", GameModelViewCreator.CreateFullViewCategorised(
+				new ObservableCollection<string>(ServiceLocator.ModelCacheService.CharactersByCountry.Keys),
+				(category) => { return ServiceLocator.ModelCacheService.CharactersByCountry[category].GetObservableCollection(); }
+				));
 		}
 
 		private void PushDynastyControl() {
-			RootFlowPageVM.MainFlowPage.PushControl("Dynasties", new DynastyFullControl());
+			RootFlowPageVM.MainFlowPage.PushControl("Dynasties", GameModelViewCreator.CreateFullView(ServiceLocator.ModelCacheService.Dynasties.GetObservableCollection()));
 		}
 
 		private void PushDynastyHouseControl() {
-			RootFlowPageVM.MainFlowPage.PushControl("Dynasty houses", new DynastyHouseFullControl());
+			RootFlowPageVM.MainFlowPage.PushControl("Dynasty houses", GameModelViewCreator.CreateFullView(ServiceLocator.ModelCacheService.DynastyHouses.GetObservableCollection()));
 		}
 	}
 }

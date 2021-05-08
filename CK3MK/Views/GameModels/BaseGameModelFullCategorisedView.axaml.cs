@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace CK3MK.Views.GameModels.Common {
-	public class DynastyHouseDetailsControl : UserControl {
-		public DynastyHouseDetailsControl() {
+namespace CK3MK.Views.GameModels {
+	public class BaseGameModelFullCategorisedView : UserControl {
+		public BaseGameModelFullCategorisedView() {
 			InitializeComponent();
 		}
 

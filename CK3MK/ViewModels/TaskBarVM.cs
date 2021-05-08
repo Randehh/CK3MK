@@ -1,13 +1,8 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.LogicalTree;
+﻿using Avalonia.Controls;
 using CK3MK.Models;
-using CK3MK.Models.Game.History;
 using CK3MK.Services;
 using CK3MK.Utilities;
 using CK3MK.Views;
-using CK3MK.Views.GameModels;
-using CK3MK.Views.GameModels.Common;
 using ReactiveUI;
 using System.Collections.ObjectModel;
 using System.Diagnostics;

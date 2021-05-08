@@ -2,20 +2,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:va="using:CK3MK.Views.GameModels.History"
+        xmlns:va="using:CK3MK.Views.GameModels"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
-        x:Class="CK3MK.Views.GameModels.History.CharacterFullControl">
+        x:Class="CK3MK.Views.GameModels.BaseGameModelFullCategorisedView">
   <Grid Margin="10">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="300"/>
       <ColumnDefinition Width="15"/>
-      <ColumnDefinition Width="600"/>
+      <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
-    
-    <va:CharacterSelectorControl Grid.Column="0" Margin="0,0,5,0"/>
+
+    <va:BaseGameModelListCategorisedView Grid.Column="0" Margin="0,0,5,0"/>
     
     <Grid Grid.Column="1" Margin="7" Background="Gray"/>
 
-    <va:CharacterDetailsControl Grid.Column="2" DataContext="{Binding SelectedCharacter}" Margin="5,0,0,0" x:Name="DetailsControl"/>
+    <va:BaseGameModelView Grid.Column="2" DataContext="{Binding SelectedModel}" Margin="5,0,0,0" x:Name="DetailsView"/>
   </Grid>
 </UserControl>

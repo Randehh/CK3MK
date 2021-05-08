@@ -4,13 +4,10 @@ using CK3MK.Models.Game.Common;
 using CK3MK.Models.Game.History;
 using CK3MK.Services;
 using CK3MK.ViewModels.RootPages;
+using CK3MK.Views.GameModels;
 using CK3MK.Views.GameModels.Attributes;
-using CK3MK.Views.GameModels.Common;
-using CK3MK.Views.GameModels.History;
 using ReactiveUI;
 using System;
-using System.Collections.ObjectModel;
-using System.Reactive;
 using static CK3MK.Models.Game.GameModelAttributes;
 
 namespace CK3MK.ViewModels.GameModels.Attributes {
@@ -61,22 +58,15 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 			} else if (attribute is GameModelAttributeCharacter) {
 				controlToAdd = new GameModelAttributeCharacterControl();
 				AttributeContextObject = ServiceLocator.ModelCacheService.Characters.GetObservableCollection();
-				PushDetailsCommand = () => {
-					Character character = (Attribute as GameModelAttributeCharacter).Value;
-					string characterName = character.Name.StringValue;
-					RootFlowPageVM.MainFlowPage.PushControl($"Character - {characterName}", new CharacterDetailsControl() { DataContext = character });
-				};
+				SetDetailsCommand<Character>();
 			} else if (attribute is GameModelAttributeDynasty) {
 				controlToAdd = new GameModelAttributeDynastyControl();
 				AttributeContextObject = ServiceLocator.ModelCacheService.Dynasties.GetObservableCollection();
-				PushDetailsCommand = () => {
-					Dynasty dynasty = (Attribute as GameModelAttributeDynasty).Value;
-					string dynastyName = dynasty.Name.StringValue;
-					RootFlowPageVM.MainFlowPage.PushControl($"Dynasty - {dynastyName}", new DynastyDetailsControl() { DataContext = dynasty });
-				};
+				SetDetailsCommand<Dynasty>();
 			} else if (attribute is GameModelAttributeDynastyHouse) {
 				controlToAdd = new GameModelAttributeDynastyHouseControl();
 				AttributeContextObject = ServiceLocator.ModelCacheService.DynastyHouses.GetObservableCollection();
+				SetDetailsCommand<DynastyHouse>();
 			} else {
 				ServiceLocator.LoggingService.WriteLine($"Cannot find attribute control for attribute {attribute.GetType().Name}", LoggingService.LogSeverity.Critical);
 				return;
@@ -87,22 +77,12 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 			}
 		}
 
-		private class CharacterConverter {
-			public CharacterConverter(IGameModelAttribute attribute) {
-
-			}
-			public IGameModelAttribute Attribute { get; set; }
-			public ObservableCollection<SimpleGameModel<Character>> Characters { get; set; } = ServiceLocator.ModelCacheService.Characters.GetObservableCollection();
-		}
-
-		private enum AttributeType {
-			Unknown,
-			String,
-			Integer,
-			Bool,
-			Character,
-			Dynasty,
-			DynastyHouse
+		private void SetDetailsCommand<T>() where T : BaseGameModel {
+			PushDetailsCommand = () => {
+				T model = (Attribute as GameModelAttribute<T>).Value;
+				string modelName = model.Name.StringValue;
+				RootFlowPageVM.MainFlowPage.PushControl(modelName, BaseGameModelView.CreateForModel(modelName, model));
+			};
 		}
 	}
 }

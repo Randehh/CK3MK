@@ -1,10 +1,9 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace CK3MK.Views.GameModels.History {
-	public class CharacterDetailsControl : UserControl {
-		public CharacterDetailsControl() {
+namespace CK3MK.Views.GameModels {
+	public class BaseGameModelFullView : UserControl {
+		public BaseGameModelFullView() {
 			InitializeComponent();
 		}
 

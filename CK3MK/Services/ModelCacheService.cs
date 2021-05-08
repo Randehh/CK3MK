@@ -1,5 +1,4 @@
-﻿using CK3MK.Models.Game;
-using CK3MK.Models.Game.Common;
+﻿using CK3MK.Models.Game.Common;
 using CK3MK.Models.Game.History;
 using CK3MK.Utilities;
 using System.Collections.Generic;

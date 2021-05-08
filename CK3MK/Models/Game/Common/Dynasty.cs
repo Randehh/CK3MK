@@ -10,10 +10,5 @@ namespace CK3MK.Models.Game.Common {
 			Culture = RegisterAttribute(new GameModelAttributeString(this, "Culture"));
 			Prefix = RegisterAttribute(new GameModelAttributeString(this, "Prefix"));
 		}
-
-		public override string GetListEntryName() {
-			if (string.IsNullOrWhiteSpace(Name.Value)) return "";
-			return Name.Value;
-		}
 	}
 }

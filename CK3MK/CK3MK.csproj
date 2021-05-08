@@ -37,26 +37,17 @@
     <Compile Update="Views\GameModels\Attributes\GameModelAttributeBooleanControl.axaml.cs">
       <DependentUpon>GameModelAttributeBooleanControl.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\GameModels\Common\DynastyHouseFullControl.axaml.cs">
-      <DependentUpon>DynastyHouseFullControl.axaml</DependentUpon>
+    <Compile Update="Views\GameModels\BaseGameModelFullCategorisedView.axaml.cs">
+      <DependentUpon>BaseGameModelFullCategorisedView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\GameModels\Common\DynastyHouseDetailsControl.axaml.cs">
-      <DependentUpon>DynastyHouseDetailsControl.axaml</DependentUpon>
+    <Compile Update="Views\GameModels\BaseGameModelListCategorisedView.axaml.cs">
+      <DependentUpon>BaseGameModelListCategorisedView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\GameModels\Common\DynastyDetailsControl.axaml.cs">
-      <DependentUpon>DynastyDetailsControl.axaml</DependentUpon>
+    <Compile Update="Views\GameModels\BaseGameModelListView.axaml.cs">
+      <DependentUpon>BaseGameModelListView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\GameModels\Common\DynastyHouseSelectorControl.axaml.cs">
-      <DependentUpon>DynastyHouseSelectorControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\GameModels\Common\DynastySelectorControl.axaml.cs">
-      <DependentUpon>DynastySelectorControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\GameModels\Common\DynastyFullControl.axaml.cs">
-      <DependentUpon>DynastyFullControl.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\GameModels\History\CharacterFullControl.axaml.cs">
-      <DependentUpon>CharacterFullControl.axaml</DependentUpon>
+    <Compile Update="Views\GameModels\BaseGameModelFullView.axaml.cs">
+      <DependentUpon>BaseGameModelFullView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

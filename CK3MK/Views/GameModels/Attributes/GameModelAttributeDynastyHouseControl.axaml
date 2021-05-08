@@ -8,12 +8,22 @@
   <UserControl.Resources>
     <cv:DynastyHouseModelConverter x:Key="dynastyHouseConverter"/>
   </UserControl.Resources>
-  
-  <ComboBox Items="{ Binding AttributeContextObject }" SelectedItem="{ Binding Attribute.Value, Converter={ StaticResource dynastyHouseConverter } Mode=OneWay }" HorizontalAlignment="Stretch" VerticalContentAlignment="Center">
-    <ComboBox.ItemTemplate>
-      <DataTemplate>
-        <TextBlock Text="{ Binding ListEntryName }" />
-      </DataTemplate>
-    </ComboBox.ItemTemplate>
-  </ComboBox>
+
+  <Grid>
+   <Grid.ColumnDefinitions>
+     <ColumnDefinition Width="*"/>
+     <ColumnDefinition Width="10"/>
+     <ColumnDefinition Width="auto"/>
+   </Grid.ColumnDefinitions>
+   
+   <ComboBox Items="{ Binding AttributeContextObject }" SelectedItem="{ Binding Attribute.Value, Converter={ StaticResource dynastyHouseConverter } Mode=OneWay }"
+             HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="0">
+     <ComboBox.ItemTemplate>
+       <DataTemplate>
+         <TextBlock Text="{ Binding ListEntryName }" />
+       </DataTemplate>
+     </ComboBox.ItemTemplate>
+   </ComboBox>
+   <Button Content="Details" Command="{Binding PushDetailsCommand}" Grid.Column="2"/>
+  </Grid>
 </UserControl>
