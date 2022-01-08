@@ -46,8 +46,10 @@ namespace CK3MK.ViewModels {
 			}
 
 			if (!string.IsNullOrWhiteSpace(ServiceLocator.GlobalSettingsService.BaseGameFilePath)) {
-				ServiceLocator.ModelCacheService.LoadAllData();
+				ServiceLocator.MegaCacheService.LoadData();
 			}
+
+			ServiceLocator.ModelCacheService.LoadAllData();
 		}
 
 		public void RegisterTaskBar() {

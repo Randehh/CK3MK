@@ -85,6 +85,9 @@ namespace CK3MK.Models.Game {
 			public override string ValueFromString(string s) {
 				return s;
 			}
+			public override string ValueToString(string o) {
+				return ServiceLocator.MegaCacheService.GetLocalizedString(o);
+			}
 
 			public string GetValue(bool includeQuotes) {
 				return Value;

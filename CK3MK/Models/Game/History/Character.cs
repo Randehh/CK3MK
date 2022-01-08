@@ -4,6 +4,7 @@ namespace CK3MK.Models.Game.History {
 	public class Character : BaseGameModel {
 		public static new string ScopeType => "Character";
 
+		public GameModelAttributeString Name { get; set; }
 		public GameModelAttributeString Dna { get; set; }
 		public GameModelAttributeBool Female { get; set; }
 		public GameModelAttributeInt Martial { get; set; }
@@ -26,6 +27,7 @@ namespace CK3MK.Models.Game.History {
 		public GameModelAttributeInt Fertility { get; set; }
 
 		public Character(string fileName) : base(fileName) {
+			Name =					RegisterAttribute(new GameModelAttributeString(this, "Name", true));
 			Dna =					RegisterAttribute(new GameModelAttributeString(this, "DNA"));
 			Female =				RegisterAttribute(new GameModelAttributeBool(this, "Is female", "Yes", "No"));
 			Martial =				RegisterAttribute(new GameModelAttributeInt(this, "Martial skill"));
@@ -45,6 +47,10 @@ namespace CK3MK.Models.Game.History {
 			Sexuality =				RegisterAttribute(new GameModelAttributeString(this, "Sexuality"));
 			Health =				RegisterAttribute(new GameModelAttributeInt(this, "Health"));
 			Fertility =				RegisterAttribute(new GameModelAttributeInt(this, "Fertility"));
+		}
+
+		public override string GetListEntryName() {
+			return Name.StringValue;
 		}
 	}
 }

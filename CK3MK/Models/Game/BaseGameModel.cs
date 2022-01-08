@@ -16,14 +16,12 @@ namespace CK3MK.Models.Game {
 		//Base attributes
 		public string FileSourceName { get; set; }
 		public GameModelAttributeString Id { get; set; }
-		public GameModelAttributeString Name { get; set; }
 
 		private List<Tuple<IGameModelAttribute, string, bool>> m_PostLinkPairs = new List<Tuple<IGameModelAttribute, string, bool>>();
 
 		public BaseGameModel(string fileName) {
 			FileSourceName = fileName;
 			Id = RegisterAttribute(new GameModelAttributeString(this, "ID"));
-			Name = RegisterAttribute(new GameModelAttributeString(this, "Name", true));
 		}
 
 		private List<IGameModelAttribute> m_Attributes = new List<IGameModelAttribute>();
@@ -78,7 +76,7 @@ namespace CK3MK.Models.Game {
 		}
 
 		public virtual string GetListEntryName() {
-			return Name.Value;
+			return Id.Value;
 		}
 	}
 }

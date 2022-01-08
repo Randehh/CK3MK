@@ -6,6 +6,7 @@ namespace CK3MK.Utilities {
 		public static string RootFolder = ServiceLocator.GlobalSettingsService.BaseGameFilePath;
 
 		//Secondary root folders
+		public static string Localization => Path.Combine(RootFolder, "localization");
 		public static string Common => Path.Combine(RootFolder, "common");
 		public static string History => Path.Combine(RootFolder, "history");
 

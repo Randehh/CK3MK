@@ -80,7 +80,7 @@ namespace CK3MK.ViewModels.GameModels.Attributes {
 		private void SetDetailsCommand<T>() where T : BaseGameModel {
 			PushDetailsCommand = () => {
 				T model = (Attribute as GameModelAttribute<T>).Value;
-				string modelName = model.Name.StringValue;
+				string modelName = model.GetListEntryName();
 				RootFlowPageVM.MainFlowPage.PushControl(modelName, BaseGameModelView.CreateForModel(modelName, model));
 			};
 		}

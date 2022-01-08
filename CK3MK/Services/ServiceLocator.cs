@@ -26,12 +26,21 @@ namespace CK3MK.Services {
 			}
 		}
 
+		private static MegaCacheService m_MegaCacheService = null;
+		public static MegaCacheService MegaCacheService {
+			get {
+				if (m_MegaCacheService == null) {
+					m_MegaCacheService = new MegaCacheService();
+				}
+				return m_MegaCacheService;
+			}
+		}
+
 		private static ModelCacheService m_ModelCacheService = null;
 		public static ModelCacheService ModelCacheService {
 			get {
 				if (m_ModelCacheService == null) {
 					m_ModelCacheService = new ModelCacheService();
-					m_ModelCacheService.LoadAllData();
 				}
 				return m_ModelCacheService;
 			}
